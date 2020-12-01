@@ -3,7 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React, { Component } from 'react';
+import React, { Component, Profiler } from 'react';
+import { Avatar } from 'react-native-elements';
 import { StyleSheet, Text, View, Alert } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -34,18 +35,29 @@ const MainDrawer = () => (
   </Drawer.Navigator>
 )
 
+
+
 class App extends Component {
 
   render(){
+
     return(
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator >
           { this.props.auth.isAuth ?
             //whole app
             <>
               <Stack.Screen
                 name="AMMS-FOS" 
                 component={MainDrawer}
+                options={() => ({
+                  headerRight: () => <Avatar
+                    rounded
+                    source={require('../images/profile.jpg')}
+                    containerStyle={{marginRight: 20, marginTop: 2 }}
+                    size={40}
+                  />
+                })}  
               />
             </>
             :
