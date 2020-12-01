@@ -1,6 +1,6 @@
 const INITIAL_STATE = {
     user: [],
-    isAuth: false,
+    isAuth: true,
     error: null
 }
 
