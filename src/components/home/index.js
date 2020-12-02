@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Card } from 'react-native-elements';
 import Courses from './courses';
+import * as Animatable from 'react-native-animatable';
 
 const HomeScreen = ({navigation}) => {
 
@@ -9,10 +10,14 @@ const HomeScreen = ({navigation}) => {
 
     return(
         <View style={styles.mainBody}>
-            <Card>
-                <Card.FeaturedTitle style={{ color: '#1e90ff' }}>Hello {stu.id} {stu.name}</Card.FeaturedTitle>
-            </Card>
-            <Courses navigation={navigation}/>
+            <Animatable.View animation="slideInDown" duration={1500} delay={500}>
+                <Card>
+                    <Card.FeaturedTitle style={{ color: '#1e90ff' }}>Hello {stu.id} {stu.name}</Card.FeaturedTitle>
+                </Card>
+            </Animatable.View>
+            <Animatable.View animation="lightSpeedIn" duration={1500} delay={900}>
+                <Courses navigation={navigation}/>
+            </Animatable.View>
         </View>
     )
 }
@@ -21,7 +26,6 @@ const styles = StyleSheet.create({
 
     mainBody: {
         flex: 1,
-        justifyContent: 'center',
         backgroundColor: '#e0ffff',
         alignContent: 'center',
     },

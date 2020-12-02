@@ -7,7 +7,7 @@ import React, { Component, Profiler } from 'react';
 import { Icon } from 'react-native-elements';
 /*import { Avatar } from 'react-native-elements';*/
 import { Avatar } from 'react-native-paper';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 
 import ARScreen from './components/attendanceReport';
@@ -53,11 +53,17 @@ class App extends Component {
                 name="AMMS-FOS" 
                 component={MainDrawer}
                 options={({navigation}) => ({
-                  headerRight: () => (<Avatar.Image
-                    source={require('../images/profile2.png')}
-                    style={{marginRight: 20, marginTop: 2 }}
-                    size={40}
-                  />),
+                  headerRight: () => (
+                    <TouchableOpacity
+                      onPress = {() => navigation.navigate('My Profile')}
+                    >
+                      <Avatar.Image
+                        source={require('../images/profile2.png')}
+                        style={{marginRight: 20, marginTop: 2 }}
+                        size={40}
+                      />
+                    </TouchableOpacity>
+                  ),
                   headerLeft: () => (
                     <Icon
                       name='menu'

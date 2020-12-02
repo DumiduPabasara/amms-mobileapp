@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, Text, Button, StyleSheet, Alert } from 'react-native';
-import { ListItem, Avatar, Card} from 'react-native-elements'
+import { ListItem, Avatar, Card} from 'react-native-elements';
 
 const Courses = ({ navigation }) => {
 
