@@ -4,7 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { Component, Profiler } from 'react';
-import { Avatar } from 'react-native-elements';
+/*import { Avatar } from 'react-native-elements';*/
+import { Avatar } from 'react-native-paper';
 import { StyleSheet, Text, View, Alert } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -51,10 +52,9 @@ class App extends Component {
                 name="AMMS-FOS" 
                 component={MainDrawer}
                 options={() => ({
-                  headerRight: () => <Avatar
-                    rounded
-                    source={require('../images/profile.jpg')}
-                    containerStyle={{marginRight: 20, marginTop: 2 }}
+                  headerRight: () => <Avatar.Image
+                    source={require('../images/profile2.png')}
+                    style={{marginRight: 20, marginTop: 2 }}
                     size={40}
                   />
                 })}  
