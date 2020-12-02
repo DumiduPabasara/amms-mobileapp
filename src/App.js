@@ -1,9 +1,10 @@
 import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { Component, Profiler } from 'react';
+import { Icon } from 'react-native-elements';
 /*import { Avatar } from 'react-native-elements';*/
 import { Avatar } from 'react-native-paper';
 import { StyleSheet, Text, View, Alert } from 'react-native';
@@ -13,7 +14,7 @@ import ARScreen from './components/attendanceReport';
 import HomeScreen from './components/home';
 import AuthScreen from './components/auth';
 import NotificationScreen from './components/notifications';
-import LogOut from './components/auth/logout';
+import Profile from './components/userProfile';
 
 import { Stack, HomeStack } from './navigation/stacks'
 const Drawer = createDrawerNavigator();
@@ -32,7 +33,7 @@ const MainDrawer = () => (
   >
     <Drawer.Screen name="Home" component={Tabber}/>
     <Drawer.Screen name="Attendance Report" component={ARScreen}/>
-    <Drawer.Screen name="Log Out" component={LogOut}/>
+    <Drawer.Screen name="My Profile" component={Profile}/>
   </Drawer.Navigator>
 )
 
@@ -51,13 +52,23 @@ class App extends Component {
               <Stack.Screen
                 name="AMMS-FOS" 
                 component={MainDrawer}
-                options={() => ({
-                  headerRight: () => <Avatar.Image
+                options={({navigation}) => ({
+                  headerRight: () => (<Avatar.Image
                     source={require('../images/profile2.png')}
                     style={{marginRight: 20, marginTop: 2 }}
                     size={40}
-                  />
-                })}  
+                  />),
+                  headerLeft: () => (
+                    <Icon
+                      name='menu'
+                      size={40}
+                      containerStyle={{marginLeft: 15, marginTop: 2 }}
+                      color='#add8e6'
+                      onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+                    />
+                  )
+                  })
+                }  
               />
             </>
             :
