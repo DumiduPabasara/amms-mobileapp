@@ -32,7 +32,7 @@ const Courses = ({ navigation }) => {
                     <ListItem 
                         key={l.name}
                         bottomDivider
-                        onPress={l.active ? ()=> navigation.navigate('QRScanner_screen') : () => Alert.alert('Course did not started yet')}
+                        onPress={l.active ? () => {navigation.navigate('QRScanner_screen', { courseName : l.name } )} : () => Alert.alert('Course did not started yet')}
                     >
                         <Avatar 
                             size={50}

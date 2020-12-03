@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, Dimensions, Image } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
-export default function QRScannerScreen() {
+export default function QRScannerScreen( {route} ) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+
+  const { courseName } = route.params;
+  let courseId = JSON.stringify(courseName);
 
   useEffect(() => {
     (async () => {
@@ -13,9 +16,23 @@ export default function QRScannerScreen() {
     })();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = ({ data, courseId }) => {
+
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+
+    let scannedData = data;
+
+    if ( scannedData.includes(courseId) ) {
+
+      alert(`Your Attendance is marked for the course ${courseName}`);
+    }
+
+    else {
+      alert(`Invalid QR code scanned\n Attendance not marked ${courseName} !`);
+    }
+
+    /*alert(`Bar code with type ${type} and data ${data} has been scanned!`)*/
+
   };
 
   if (hasPermission === null) {
