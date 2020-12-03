@@ -5,18 +5,30 @@ import App from './src/App';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import promiseMiddleware from 'redux-promise';
-import reducers from './src/reduxStore/reducers';
+// import reducers from './src/reduxStore/reducers';
+import reducer from './src/store';
+import { userLoggedIn } from './src/store/login';
 
 const composeEnhancers = window.__REDUX_DEVTOOL_EXTENSION_COMPOSE__ || compose;
-const createStoreWithMiddleware = createStore(
-    reducers,
-    composeEnhancers(applyMiddleware(promiseMiddleware))
+const store = createStore(
+  reducer,
+  composeEnhancers(applyMiddleware(promiseMiddleware))
 )
 
+const user = {
+  id: 'sc10266',
+  firstName: 'SC/2017/10266',
+  username: 'Pabasara',
+  role: 'student',
+  courses: ['CSC2233', 'CSC2263', 'CSC2272']
+};
+
+store.dispatch(userLoggedIn(user));
+
 const reduxApp = () => (
-    <Provider store={createStoreWithMiddleware}>
-        <App />
-    </Provider>
+  <Provider store={ store }>
+    <App />
+  </Provider>
 )
 
 // registerRootComponent calls AppRegistry.registerComponent('main', () => reduxApp);

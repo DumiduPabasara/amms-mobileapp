@@ -3,7 +3,7 @@ import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React, { Component, Profiler } from 'react';
+import React, { Profiler } from 'react';
 import { Icon } from 'react-native-elements';
 /*import { Avatar } from 'react-native-elements';*/
 import { Avatar } from 'react-native-paper';
@@ -17,83 +17,83 @@ import NotificationScreen from './components/notifications';
 import Profile from './components/userProfile';
 
 import { Stack, HomeStack } from './navigation/stacks'
+
+import { useSelector } from 'react-redux';
+import { getLoggedInUserDetails } from './store/login';
+
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 
 const Tabber = () => (
   <Tab.Navigator>
-    <Tab.Screen name="Home" component={HomeStack}/>
-    <Tab.Screen name="Notification" component={NotificationScreen}/>
+    <Tab.Screen name="Home" component={ HomeStack } />
+    <Tab.Screen name="Notification" component={ NotificationScreen } />
   </Tab.Navigator>
 )
 
 const MainDrawer = () => (
-  <Drawer.Navigator 
-    drawerStyle={{ backgroundColor: '#add8e6' }} 
+  <Drawer.Navigator
+    drawerStyle={ { backgroundColor: '#add8e6' } }
   >
-    <Drawer.Screen name="Home" component={Tabber}/>
-    <Drawer.Screen name="Attendance Report" component={ARScreen}/>
-    <Drawer.Screen name="My Profile" component={Profile}/>
+    <Drawer.Screen name="Home" component={ Tabber } />
+    <Drawer.Screen name="Attendance Report" component={ ARScreen } />
+    <Drawer.Screen name="My Profile" component={ Profile } />
   </Drawer.Navigator>
 )
 
+const App = () => {
 
+  const user = useSelector(getLoggedInUserDetails);
+  console.log(user);
 
-class App extends Component {
-
-  render(){
-
-    return(
-      <NavigationContainer>
-        <Stack.Navigator >
-          { this.props.auth.isAuth ?
-            //whole app
-            <>
-              <Stack.Screen
-                name="AMMS-FOS" 
-                component={MainDrawer}
-                options={({navigation}) => ({
-                  headerRight: () => (
-                    <TouchableOpacity
-                      onPress = {() => navigation.navigate('My Profile')}
-                    >
-                      <Avatar.Image
-                        source={require('../images/profile2.png')}
-                        style={{marginRight: 20, marginTop: 2 }}
-                        size={40}
-                      />
-                    </TouchableOpacity>
-                  ),
-                  headerLeft: () => (
-                    <Icon
-                      name='menu'
-                      size={40}
-                      containerStyle={{marginLeft: 15, marginTop: 2 }}
-                      color='#add8e6'
-                      onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
-                    />
-                  )
-                  })
-                }  
-              />
-            </>
-            :
-            //login
+  return (
+    <NavigationContainer>
+      <Stack.Navigator >
+        { user.id ?
+          //whole app
+          <>
             <Stack.Screen
-              name="AuthScreen" 
-              component={AuthScreen}
+              name="AMMS-FOS"
+              component={ MainDrawer }
+              options={ ({ navigation }) => ({
+                headerRight: () => (
+                  <TouchableOpacity
+                    onPress={ () => navigation.navigate('My Profile') }
+                  >
+                    <Avatar.Image
+                      source={ require('../images/profile2.png') }
+                      style={ { marginRight: 20, marginTop: 2 } }
+                      size={ 40 }
+                    />
+                  </TouchableOpacity>
+                ),
+                headerLeft: () => (
+                  <Icon
+                    name='menu'
+                    size={ 40 }
+                    containerStyle={ { marginLeft: 15, marginTop: 2 } }
+                    color='#add8e6'
+                    onPress={ () => navigation.dispatch(DrawerActions.toggleDrawer()) }
+                  />
+                )
+              })
+              }
             />
-          }
-        </Stack.Navigator>
+          </>
+          :
+          //login
+          <Stack.Screen
+            name="AuthScreen"
+            component={ AuthScreen }
+          />
+        }
+      </Stack.Navigator>
 
-      </NavigationContainer>
+    </NavigationContainer>
 
-    )
-  }
+  )
 
 }
 
-const mapStateToProps = state => ({ auth : state.auth })
-
-export default connect(mapStateToProps)(App);
+export default App;
 
