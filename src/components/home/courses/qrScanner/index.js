@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button, Dimensions, Image } from 'react-native';
+import { Text, View, StyleSheet, Button, Dimensions, Image, Alert} from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 export default function QRScannerScreen( {route} ) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
-  const { courseName } = route.params;
-  let courseId = JSON.stringify(courseName);
+  const { courseCode } = route.params;
+  const courseId = courseCode.toString();
+  /*console.log(courseId);*/
 
   useEffect(() => {
     (async () => {
@@ -16,19 +17,25 @@ export default function QRScannerScreen( {route} ) {
     })();
   }, []);
 
-  const handleBarCodeScanned = ({ data, courseId }) => {
+  const handleBarCodeScanned = ({ data }) => {
 
     setScanned(true);
 
     let scannedData = data;
 
-    if ( scannedData.includes(courseId) ) {
+    let scannedCourseId = scannedData.slice(0,7);
 
-      alert(`Your Attendance is marked for the course ${courseName}`);
+    /*console.log(scannedCourseId);*/
+
+    /*console.log(scannedCourseId.includes(courseId));*/
+
+    if ( scannedCourseId.includes(courseId) ) {
+
+      Alert.alert(`Your Attendance is marked for the course ${courseId}`);
     }
 
     else {
-      alert(`Invalid QR code scanned\n Attendance not marked ${courseName} !`);
+      Alert.alert(`Invalid QR code scanned for ${courseId} !`);
     }
 
     /*alert(`Bar code with type ${type} and data ${data} has been scanned!`)*/
@@ -65,7 +72,7 @@ export default function QRScannerScreen( {route} ) {
 }
 
 const { width } = Dimensions.get('window');
-const qrSize = width * 0.9;
+const qrSize = width * 1.2;
 
 const styles = StyleSheet.create({
 
@@ -74,25 +81,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
       },
       qr: {
-        marginTop: '20%',
+        marginTop: '10%',
         marginBottom: '20%',
         width: qrSize,
         height: qrSize,
       },
 
 })
-
-/*import React from 'react';
-import { View, Text } from 'react-native';
-
-
-const QRScannerScreen = () => {
-
-    return(
-        <View>
-            <Text>This is QR Scanner</Text>
-        </View>
-    )
-}
-
-export default QRScannerScreen;*/
