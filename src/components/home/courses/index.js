@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import { ScrollView, Text, Button, StyleSheet, Alert } from 'react-native';
 import { ListItem, Avatar, Card } from 'react-native-elements';
+import moment from 'moment';
 
 class Courses extends Component {
   state = { courses: [], loading: false };
@@ -29,6 +30,31 @@ class Courses extends Component {
 
     const { courses } = this.state;
 
+    const getDayAndTime = () => {
+      const m = moment();
+      return { day: m.day(), time: m.hour() };
+    };
+    
+    const isActive = schedule => {
+    
+      const { day, time } = getDayAndTime();
+    
+      const active =
+        schedule.day === day &&
+        time >= schedule.startTime &&
+        time < schedule.startTime + schedule.duration;
+    
+      if (!active) {
+        return false;
+      }
+
+      else {
+        return true;
+      }
+    
+     
+    };
+
     return (
       <ScrollView>
         <Card>
@@ -39,11 +65,11 @@ class Courses extends Component {
               <ListItem
                 key={ l.code }
                 bottomDivider
-                onPress={ true ? () => { this.props.navigation.navigate('QRScanner_screen', { courseCode: l.code }) } : () => Alert.alert('Course not available at the moment') }
+                onPress={ isActive(l.schedule) ? () => { this.props.navigation.navigate('QRScanner_screen', { courseCode: l.code }) } : () => Alert.alert('Course not available at the moment') }
               >
                 <Avatar
                   size={ 50 }
-                  overlayContainerStyle={ true ? styles.activeTrue : styles.activeFalse }
+                  overlayContainerStyle={ isActive(l.schedule) ? styles.activeTrue : styles.activeFalse }
                   rounded
                   title={ l.schedule.startTime.toString() }
                   activeOpacity={ 0.7 }
