@@ -15,7 +15,7 @@ class Courses extends Component {
       if (userCourses)
         for (let i = 0; i < userCourses.length; i++) {
           const { data } = await axios.get(
-            `http://192.168.1.100:9000/courses/${userCourses[i]}`
+            `http://192.168.1.101:9000/courses/${userCourses[i]}`
           );
           courses.push(data);
           console.log(courses);
@@ -54,6 +54,33 @@ class Courses extends Component {
     
      
     };
+
+    /*const sortedBasedOnActive = courses => {
+
+      let activeCourses = [];
+
+      let notActiveCourse = [];
+
+      //let sortedCourses = [];
+
+      for ( let i=0; i<courses.length; i++) {
+
+        if(isActive(courses.schedule)) {
+          activeCourses = courses[i];
+        }
+
+        else {
+          notActiveCourse = courses[i];
+        }
+
+      }
+
+      let sortedCourses = [...activeCourses, ...notActiveCourse];
+
+      return sortedCourses;
+
+    }*/
+
 
     return (
       <ScrollView>

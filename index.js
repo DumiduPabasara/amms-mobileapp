@@ -15,7 +15,7 @@ const store = createStore(
   composeEnhancers(applyMiddleware(promiseMiddleware))
 )
 
-const user = {
+/*const user = {
   id: 'sc10266',
   firstName: 'SC/2017/10266',
   username: 'Pabasara',
@@ -23,7 +23,7 @@ const user = {
   courses: ['CSC2233', 'CSC2263', 'CSC2272']
 };
 
-store.dispatch(userLoggedIn(user));
+store.dispatch(userLoggedIn(user));*/
 
 const reduxApp = () => (
   <Provider store={ store }>
