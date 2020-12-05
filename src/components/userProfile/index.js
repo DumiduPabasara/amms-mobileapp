@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Text, TouchableOpacity } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import LogOut from '../auth/logout';
 import { Card } from 'react-native-elements';
 import { Avatar } from 'react-native-paper';
@@ -11,17 +11,6 @@ import { getLoggedInUserDetails } from '../../store/login';
 const Profile = () => {
 
   const users = useSelector(getLoggedInUserDetails);
-
-  // const users = {
-  //   id: 'sc10266',
-  //   firstName: 'SC/2017/10266',
-  //   username: 'Pabasara',
-  //   cityOrTown: 'Galle',
-  //   country: 'Sri lanka',
-  //   role: 'student',
-  //   password: '12345678',
-  //   courses: ['CSC2233', 'CSC2263', 'CSC2272']
-  // }
 
   return (
     <ScrollView >

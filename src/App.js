@@ -1,24 +1,21 @@
 import 'react-native-gesture-handler';
 import { NavigationContainer, DrawerActions } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React, { Profiler } from 'react';
+import React from 'react';
 import { Icon } from 'react-native-elements';
 /*import { Avatar } from 'react-native-elements';*/
 import { Avatar } from 'react-native-paper';
-import { StyleSheet, Text, View, Alert, TouchableOpacity } from 'react-native';
-import { connect } from 'react-redux';
+import { TouchableOpacity } from 'react-native';
 
 import ARScreen from './components/attendanceReport';
-import HomeScreen from './components/home';
 import AuthScreen from './components/auth';
 import NotificationScreen from './components/notifications';
 import Profile from './components/userProfile';
 
 import { Stack, HomeStack } from './navigation/stacks'
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getLoggedInUserDetails } from './store/login';
 
 const Drawer = createDrawerNavigator();
@@ -44,7 +41,7 @@ const MainDrawer = () => (
 const App = () => {
 
   const user = useSelector(getLoggedInUserDetails);
-  console.log(user);
+  const dispatch = useDispatch();
 
   return (
     <NavigationContainer>
@@ -82,10 +79,14 @@ const App = () => {
           </>
           :
           //login
-          <Stack.Screen
-            name="AuthScreen"
-            component={ AuthScreen }
-          />
+          // <Stack.Screen
+          //   name="AuthScreen"
+          //   component={ AuthScreen }
+
+          // />
+          <Stack.Screen name="AuthScreen">
+            { props => (<AuthScreen { ...props } dispatch={ dispatch } />) }
+          </Stack.Screen>
         }
       </Stack.Navigator>
 
