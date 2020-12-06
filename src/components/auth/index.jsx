@@ -24,12 +24,12 @@ class AuthScreen extends Form {
 		const { username, password } = this.state.data;
 		try {
 			const { data } = await axios.post(
-				`http://192.168.8.100:9000/users/${username}/${password}`
+				`http://192.168.8.101:9000/api/users/${username}/${password}`
 			);
 
 			this.props.dispatch(
 				userLoggedIn({
-					id: data.id,
+					id: data._id,
 					firstName: data.firstName,
 					username: data.username,
 					role: data.role,
@@ -39,6 +39,7 @@ class AuthScreen extends Form {
 
 			this.props.navigation.push('AMMS-FOS');
 		} catch (err) {
+			console.log(err);
 			const errors = { ...this.state.errors };
 			errors.login = 'Invalid login, please try again';
 			this.setState({ errors });

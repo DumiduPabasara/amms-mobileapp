@@ -79,13 +79,9 @@ const App = () => {
           </>
           :
           //login
-          <Stack.Screen
-            name="AuthScreen"
-            component={ AuthScreen }
-          />
-          // <Stack.Screen name="AuthScreen">
-          //   { props => (<AuthScreen { ...props } dispatch={ dispatch } />) }
-          // </Stack.Screen>
+          <Stack.Screen name="AuthScreen">
+            { props => (<AuthScreen { ...props } dispatch={ dispatch } />) }
+          </Stack.Screen>
         }
       </Stack.Navigator>
 

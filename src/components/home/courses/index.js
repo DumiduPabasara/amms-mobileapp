@@ -15,12 +15,11 @@ class Courses extends Component {
       if (userCourses)
         for (let i = 0; i < userCourses.length; i++) {
           const { data } = await axios.get(
-            `http://192.168.1.101:9000/courses/${userCourses[i]}`
+            `http://192.168.8.101:9000/api/courses/${userCourses[i]}`
           );
           courses.push(data);
-          console.log(courses);
-          this.setState({ courses, loading: false });
         }
+      this.setState({ courses, loading: false });
     } catch (err) {
       console.log(err.message);
     }
@@ -34,16 +33,16 @@ class Courses extends Component {
       const m = moment();
       return { day: m.day(), time: m.hour() };
     };
-    
+
     const isActive = schedule => {
-    
+
       const { day, time } = getDayAndTime();
-    
+
       const active =
         schedule.day === day &&
         time >= schedule.startTime &&
         time < schedule.startTime + schedule.duration;
-    
+
       if (!active) {
         return false;
       }
@@ -51,8 +50,8 @@ class Courses extends Component {
       else {
         return true;
       }
-    
-     
+
+
     };
 
     /*const sortedBasedOnActive = courses => {
