@@ -7,13 +7,13 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import promiseMiddleware from 'redux-promise';
 // import reducers from './src/reduxStore/reducers';
 import reducer from './src/store';
-import { userLoggedIn } from './src/store/login';
+// import { userLoggedIn } from './src/store/login';
 
 const composeEnhancers = window.__REDUX_DEVTOOL_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   reducer,
   composeEnhancers(applyMiddleware(promiseMiddleware))
-)
+);
 
 /*const user = {
   id: 'sc10266',

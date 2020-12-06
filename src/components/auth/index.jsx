@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Icon, Input } from 'react-native-elements';
 import Form from './form';
-import Joi from 'joi';
+import Joi from 'joi-browser';
 
 import { userLoggedIn } from '../../store/login';
 
@@ -19,11 +19,6 @@ class AuthScreen extends Form {
 		data: { username: '', password: '' },
 		errors: {}
 	};
-
-	schema = Joi.object({
-		username: Joi.string().required().label('Username'),
-		password: Joi.string().min(8).required().label('Password')
-	});
 
 	doSubmit = async () => {
 		const { username, password } = this.state.data;
@@ -70,14 +65,14 @@ class AuthScreen extends Form {
 					<Input
 						placeholder='Username'
 						leftIcon={<Icon name='user-o' type='font-awesome' />}
-						onChangeText={this.handleChange}
+						onChangeText={value => this.handleChange(value, 'username')}
 						value={this.state.data.username}
 						containerStyle={styles.formInput}
 					/>
 					<Input
 						placeholder='Password'
 						leftIcon={<Icon name='key' type='font-awesome' />}
-						onChangeText={this.handleChange}
+						onChangeText={value => this.handleChange(value, 'password')}
 						value={this.state.data.password}
 						secureTextEntry
 						containerStyle={styles.formInput}

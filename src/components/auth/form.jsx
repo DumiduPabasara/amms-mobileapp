@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import Joi from 'joi-browser';
 
 class Form extends Component {
 	state = {
@@ -6,10 +7,15 @@ class Form extends Component {
 		errors: {}
 	};
 
+	schema = {
+		username: Joi.string().required().label('Username'),
+		password: Joi.string().min(8).required().label('Password')
+	};
+
 	validate = () => {
 		const errors = {};
 
-		const { error } = this.schema.validate(this.state.data, {
+		const { error } = Joi.validate(this.state.data, this.schema, {
 			abortEarly: false
 		});
 
@@ -19,9 +25,13 @@ class Form extends Component {
 		return errors;
 	};
 
-	validateProperty = ({ name, value }) => {
-		const schema = this.schema.extract([name]);
-		const { error } = schema.validate(value);
+	validateProperty = object => {
+		const schema = {
+			username: Joi.string().label('Username'),
+			password: Joi.string().min(8).label('Password')
+		};
+
+		const { error } = Joi.validate(object, schema);
 		if (error) return error.details[0].message;
 		return null;
 	};
@@ -36,14 +46,14 @@ class Form extends Component {
 		this.doSubmit();
 	};
 
-	handleChange = ({ currentTarget: input }) => {
+	handleChange = (value, name) => {
 		const errors = { ...this.state.errors };
-		const errorMessage = this.validateProperty(input);
-		if (errorMessage) errors[input.name] = errorMessage;
-		else delete errors[input.name];
+		const errorMessage = this.validateProperty({ [name]: value });
+		if (errorMessage) errors[name] = errorMessage;
+		else delete errors[name];
 
 		const data = { ...this.state.data };
-		data[input.name] = input.value;
+		data[name] = value;
 		this.setState({ data, errors });
 	};
 }
