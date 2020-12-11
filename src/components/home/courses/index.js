@@ -25,6 +25,10 @@ class Courses extends Component {
     }
   }
 
+  componentDidUpdate() {
+  
+  }
+
   render() {
 
     const { courses } = this.state;

@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler';
 import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { Icon } from 'react-native-elements';
 /*import { Avatar } from 'react-native-elements';*/
@@ -11,28 +10,21 @@ import { TouchableOpacity } from 'react-native';
 import ARScreen from './components/attendanceReport';
 import AuthScreen from './components/auth';
 import NotificationScreen from './components/notifications';
+import HomeScreen from './components/home';
 import Profile from './components/userProfile';
 
-import { Stack, HomeStack } from './navigation/stacks'
+import { Stack, HomeStack } from './navigation/stacksNtabs'
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getLoggedInUserDetails } from './store/login';
 
 const Drawer = createDrawerNavigator();
-const Tab = createBottomTabNavigator();
-
-const Tabber = () => (
-  <Tab.Navigator>
-    <Tab.Screen name="Home" component={ HomeStack } />
-    <Tab.Screen name="Notification" component={ NotificationScreen } />
-  </Tab.Navigator>
-)
 
 const MainDrawer = () => (
   <Drawer.Navigator
     drawerStyle={ { backgroundColor: '#add8e6' } }
   >
-    <Drawer.Screen name="Home" component={ Tabber } />
+    <Drawer.Screen name="Home" component={ HomeStack } />
     <Drawer.Screen name="Attendance Report" component={ ARScreen } />
     <Drawer.Screen name="My Profile" component={ Profile } />
   </Drawer.Navigator>
@@ -45,7 +37,9 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator >
+      <Stack.Navigator 
+        initialRouteName="Home_screen"
+      >
         { user.id ?
           //whole app
           <>
