@@ -6,12 +6,14 @@ const { reducer, actions } = createSlice({
   initialState: {},
   reducers: {
     userLoggedIn: (user, action) => {
-      const { id, firstName, username, role, courses } = action.payload;
+      const { id, firstName, username, role, courses, cityOrTown, country } = action.payload;
       user.id = id;
       user.firstName = firstName;
       user.username = username;
       user.role = role;
       user.courses = courses;
+      user.cityOrTown = cityOrTown;
+      user.country = country;
     },
     userLoggedOut: (user, action) => user = {}
   }

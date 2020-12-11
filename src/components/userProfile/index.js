@@ -1,5 +1,7 @@
-import React from 'react';
-import { ScrollView, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { ScrollView, Text, Platform, TouchableOpacity } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
 import LogOut from '../auth/logout';
 import { Card } from 'react-native-elements';
 import { Avatar } from 'react-native-paper';
@@ -11,6 +13,37 @@ import { getLoggedInUserDetails } from '../../store/login';
 const Profile = () => {
 
   const users = useSelector(getLoggedInUserDetails);
+  /*console.log(users);*/
+
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
+    })();
+  }, []);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  /*const user = { imageurl: image}*/
 
   return (
     <ScrollView >
@@ -18,11 +51,17 @@ const Profile = () => {
         <Card
           containerStyle={ { backgroundColor: '#e0ffff' } }
         >
-          <Avatar.Image
-            source={ require('../../../images/profile2.png') }
-            size={ 210 }
-            style={ { alignSelf: 'center', margin: 10 } }
-          />
+
+          <TouchableOpacity
+            onPress={pickImage}
+          >
+            <Avatar.Image
+              source={{ uri: image}}
+              size={ 210 }
+              style={ { alignSelf: 'center', margin: 10 } }
+            />
+          </TouchableOpacity>
+  
           <Card.Divider />
           <Text style={ { flexDirection: 'row', flex: 1, margin: 10, fontWeight: "bold", fontSize: 20 } }>My sc number : </Text>
           <Text style={ { flexDirection: 'row', flex: 2, marginLeft: 10, color: 'black' } }>{ users.firstName } </Text>
@@ -33,8 +72,8 @@ const Profile = () => {
           <Text style={ { margin: 10, fontWeight: "bold", fontSize: 20 } }>My role : </Text>
           <Text style={ { marginLeft: 10 } }>{ users.role } </Text>
 
-          {/* <Text style={ { margin: 10, fontWeight: "bold", fontSize: 20 } }>I'm from : </Text>
-          <Text style={ { marginLeft: 10, marginBottom: 10 } }>{ users.cityOrTown }, { users.country } </Text> */}
+          <Text style={ { margin: 10, fontWeight: "bold", fontSize: 20 } }>I'm from : </Text>
+          <Text style={ { marginLeft: 10, marginBottom: 10 } }>{ users.cityOrTown }, { users.country } </Text>
 
           <Card.Divider />
           <Animatable.View animation="bounce" duration={ 1000 } delay={ 1000 }>

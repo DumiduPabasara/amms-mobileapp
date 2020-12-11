@@ -24,7 +24,7 @@ class AuthScreen extends Form {
 		const { username, password } = this.state.data;
 		try {
 			const { data } = await axios.post(
-				`http://192.168.8.101:9000/api/users/${username}/${password}`
+				`http://192.168.1.100:9000/api/users/${username}/${password}`
 			);
 
 			this.props.dispatch(
@@ -33,7 +33,9 @@ class AuthScreen extends Form {
 					firstName: data.firstName,
 					username: data.username,
 					role: data.role,
-					courses: data.courses
+					courses: data.courses,
+					cityOrTown: data.cityOrTown,
+					country: data.country
 				})
 			);
 

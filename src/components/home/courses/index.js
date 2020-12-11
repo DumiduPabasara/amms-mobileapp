@@ -15,7 +15,7 @@ class Courses extends Component {
       if (userCourses)
         for (let i = 0; i < userCourses.length; i++) {
           const { data } = await axios.get(
-            `http://192.168.8.101:9000/api/courses/${userCourses[i]}`
+            `http://192.168.1.100:9000/api/courses/${userCourses[i]}`
           );
           courses.push(data);
         }
