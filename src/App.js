@@ -20,12 +20,14 @@ import { getLoggedInUserDetails } from './store/login';
 
 const Drawer = createDrawerNavigator();
 
-const MainDrawer = () => (
+const MainDrawer = ({user}) => (
   <Drawer.Navigator
     drawerStyle={ { backgroundColor: '#add8e6' } }
   >
     <Drawer.Screen name="Home" component={ HomeStack } />
-    <Drawer.Screen name="Attendance Report" component={ ARScreen } />
+    <Drawer.Screen name="Attendance Report">
+      {props => (<ARScreen {...props} user = {user} />)}
+    </Drawer.Screen>
     <Drawer.Screen name="My Profile" component={ Profile } />
   </Drawer.Navigator>
 )
@@ -45,7 +47,6 @@ const App = () => {
           <>
             <Stack.Screen
               name="AMMS-FOS"
-              component={ MainDrawer }
               options={ ({ navigation }) => ({
                 headerRight: () => (
                   <TouchableOpacity
@@ -69,7 +70,9 @@ const App = () => {
                 )
               })
               }
-            />
+            >
+              { props => (<MainDrawer {...props} user={user} />) }
+            </Stack.Screen>
           </>
           :
           //login

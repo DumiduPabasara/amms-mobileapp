@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, Text, Platform, TouchableOpacity } from 'react-native';
+import { ScrollView, Text, Platform, TouchableOpacity, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import LogOut from '../auth/logout';
@@ -8,7 +8,7 @@ import { Avatar } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
 import { useSelector } from 'react-redux';
 import { getLoggedInUserDetails } from '../../store/login';
-
+import { LinearGradient } from "expo-linear-gradient";
 
 const Profile = () => {
 
@@ -46,6 +46,11 @@ const Profile = () => {
   /*const user = { imageurl: image}*/
 
   return (
+    <LinearGradient
+                colors={["#e0ffff", "#63a8e6"]}
+                start={[0.1, 0.1]}
+                style={styles.mainBody}
+      >
     <ScrollView >
       <Animatable.View animation="fadeInDown" duration={ 1000 } delay={ 500 }>
         <Card
@@ -83,9 +88,18 @@ const Profile = () => {
       </Animatable.View>
 
     </ScrollView>
-
+    </LinearGradient>
 
   )
 }
+
+const styles = StyleSheet.create({
+
+  mainBody: {
+    flex: 1,
+    alignContent: 'center',
+  },
+
+});
 
 export default Profile;

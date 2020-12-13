@@ -11,6 +11,8 @@ import {
 import { Icon, Input } from 'react-native-elements';
 import Form from './form';
 import Joi from 'joi-browser';
+import { baseUrl } from '../../api';
+import { LinearGradient } from "expo-linear-gradient";
 
 import { userLoggedIn } from '../../store/login';
 
@@ -24,7 +26,7 @@ class AuthScreen extends Form {
 		const { username, password } = this.state.data;
 		try {
 			const { data } = await axios.post(
-				`http://192.168.1.100:9000/api/users/${username}/${password}`
+				`${baseUrl}/api/users/${username}/${password}`
 			);
 
 			this.props.dispatch(
@@ -48,10 +50,15 @@ class AuthScreen extends Form {
 			Alert.alert(errors.login);
 		}
 	};
-
+	
 	render() {
 		return (
-			<TouchableOpacity style={styles.mainBody}>
+			<LinearGradient
+                colors={["#e0ffff", "#63a8e6"]}
+                start={[0.1, 0.1]}
+                style={styles.mainBody}
+            >
+			<TouchableOpacity>
 				<View>
 					<Image
 						source={require('../../../images/3.png')}
@@ -85,6 +92,7 @@ class AuthScreen extends Form {
 					</View>
 				</View>
 			</TouchableOpacity>
+			</LinearGradient>
 		);
 	}
 }
@@ -111,7 +119,6 @@ const styles = StyleSheet.create({
 	mainBody: {
 		flex: 1,
 		justifyContent: 'center',
-		backgroundColor: '#e0ffff',
 		alignContent: 'center'
 	}
 });
