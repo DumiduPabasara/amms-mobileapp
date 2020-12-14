@@ -80,32 +80,23 @@ class Courses extends Component {
       }
 
     };
+  
+    const sortedBasedOnActive = (courses) => {
 
-    /*const sortedBasedOnActive = courses => {
+      let activeCoursesA = [];
 
-      let activeCourses = [];
+      let notActiveCourseA = [];
 
-      let notActiveCourse = [];
+      activeCoursesA = courses.filter(course => isActive(course.schedule));
+      notActiveCourseA = courses.filter(course => !isActive(course.schedule));
 
-      //let sortedCourses = [];
-
-      for ( let i=0; i<courses.length; i++) {
-
-        if(isActive(courses.schedule)) {
-          activeCourses = courses[i];
-        }
-
-        else {
-          notActiveCourse = courses[i];
-        }
-
-      }
-
-      let sortedCourses = [...activeCourses, ...notActiveCourse];
+      let sortedCourses = [...activeCoursesA, ...notActiveCourseA];
 
       return sortedCourses;
 
-    }*/
+    }
+
+    /*console.log(sortedBasedOnActive(courses));*/
 
     const marked = false;
 
@@ -115,7 +106,7 @@ class Courses extends Component {
           <Card.FeaturedSubtitle style={ { color: '#1e90ff', justifyContent: 'center' } }>Your Courses</Card.FeaturedSubtitle>
           <Card.Divider />
           {
-            courses.map((l) => (
+            sortedBasedOnActive(courses).map((l) => (
               <ListItem
                 key={ l.code }
                 style={{ flex: 1, flexDirection: 'column'}}
@@ -140,6 +131,7 @@ class Courses extends Component {
                   <ListItem.Subtitle>{ l.name }</ListItem.Subtitle>
                 </ListItem.Content>
                 <ListItem.Chevron color="white" />
+                {/*<Text>{isActive(l.schedule).toString()}</Text>*/}
               </ListItem>
             ))
           }

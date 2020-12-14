@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-/*import { View, Text } from 'react-native';*/
 import { ScrollView, Text, Button, StyleSheet, Alert } from 'react-native';
 import { ListItem, Card } from 'react-native-elements';
 import axios from 'axios';
@@ -63,9 +62,7 @@ class ARScreen extends Component {
             else  {
                 return '#ffa500';
             }
-
-
-            
+           
         }
 
 

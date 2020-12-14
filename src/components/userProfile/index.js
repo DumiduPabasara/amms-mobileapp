@@ -17,7 +17,7 @@ const Profile = () => {
 
   const [image, setImage] = useState(null);
 
-  useEffect(() => {
+  /*useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -26,7 +26,7 @@ const Profile = () => {
         }
       }
     })();
-  }, []);
+  }, []);*/
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
