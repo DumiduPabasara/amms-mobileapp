@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, Dimensions, Image, Alert} from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { Loading } from '../../../loading';
 
 export default function QRScannerScreen( {route} ) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -43,8 +44,15 @@ export default function QRScannerScreen( {route} ) {
   };
 
   if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
+
+    return (
+      <View>
+        <Text>Requesting for camera permission</Text>
+        <Loading /> 
+      </View>
+    );
   }
+
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }

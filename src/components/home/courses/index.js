@@ -130,7 +130,7 @@ class Courses extends Component {
                   <ListItem.Title>{ l.code }</ListItem.Title>
                   <ListItem.Subtitle>{ l.name }</ListItem.Subtitle>
                 </ListItem.Content>
-                <ListItem.Chevron color="white" />
+                { isActive(l.schedule) ? <ListItem.Chevron color="blue" /> : null }
                 {/*<Text>{isActive(l.schedule).toString()}</Text>*/}
               </ListItem>
             ))

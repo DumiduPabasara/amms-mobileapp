@@ -1,12 +1,13 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import { ScrollView, Text, Button, StyleSheet, Alert } from 'react-native';
 import { ListItem, Card } from 'react-native-elements';
 import axios from 'axios';
 import TouchableScale from 'react-native-touchable-scale';
 import { baseUrl } from '../../api';
 import { LinearGradient } from "expo-linear-gradient";
+import * as Animatable from 'react-native-animatable';
 
-class ARScreen extends Component {
+class ARScreen extends PureComponent {
 
     state = { courses: [], loading: true};
 
@@ -75,6 +76,7 @@ class ARScreen extends Component {
             >
             <ScrollView >
             
+            <Animatable.View animation="bounceInRight" duration={ 1500 } delay={ 500 }>
             <Card>
                 <Card.FeaturedTitle style={ { color: '#1e90ff', justifyContent: 'center' } }>My Attendance Report</Card.FeaturedTitle>
                 <Card.Divider />
@@ -92,7 +94,7 @@ class ARScreen extends Component {
                                 start: { x: 1, y: 0 },
                                 end: { x: 0.2, y: 0 },
                             }}
-                            onPress = {() => console.log("Detailed Report of "+l.code)}
+                            onPress = {() => this.props.navigation.navigate('DetailedReport_Screen', { courseCode: l.code } )}
                         >
 
                             <Text style={{ fontSize: 20}} >{l.eligible}%</Text>
@@ -111,7 +113,7 @@ class ARScreen extends Component {
                     ))
                 }
             </Card>
-            
+            </Animatable.View>
             </ScrollView>
             </LinearGradient>
         
@@ -119,14 +121,14 @@ class ARScreen extends Component {
     }
   };
   
-  const styles = StyleSheet.create({
+const styles = StyleSheet.create({
 
     mainBody: {
       flex: 1,
       alignContent: 'center',
     },
   
-  });
+});
 
 
 

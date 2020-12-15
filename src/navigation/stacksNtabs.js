@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon } from 'react-native-elements';
@@ -7,6 +8,8 @@ import { StyleSheet } from 'react-native';
 import HomeScreen from '../components/home';
 import QRScannerScreen from '../components/home/courses/qrScanner';
 import NotificationScreen from '../components/notifications';
+import ARScreen from '../components/attendanceReport';
+import DetailedReport from '../components/attendanceReport/detailedReport';
 
 export const Stack = createStackNavigator();
 
@@ -75,6 +78,27 @@ export const HomeStack = () => (
             options = {
                 {headerTitle: 'Scan the QR code'}
             }
+        />
+    </Stack.Navigator>
+)
+
+export const ARStack = ({user}) => (
+    <Stack.Navigator
+        initialRouteName="AR_screen"
+    >
+        <Stack.Screen  
+            options={
+                {headerLeft: null},
+                {headerTitle: null},
+                {headerShown: false}
+            } 
+            name="AR_Screen" 
+        >
+            {props => (<ARScreen {...props} user = {user} />)}
+        </Stack.Screen>
+        <Stack.Screen 
+            name="DetailedReport_Screen" 
+            component={DetailedReport}
         />
     </Stack.Navigator>
 )

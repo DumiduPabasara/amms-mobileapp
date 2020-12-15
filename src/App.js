@@ -13,7 +13,7 @@ import NotificationScreen from './components/notifications';
 import HomeScreen from './components/home';
 import Profile from './components/userProfile';
 
-import { Stack, HomeStack } from './navigation/stacksNtabs'
+import { Stack, HomeStack, ARStack } from './navigation/stacksNtabs'
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getLoggedInUserDetails } from './store/login';
@@ -26,7 +26,7 @@ const MainDrawer = ({user}) => (
   >
     <Drawer.Screen name="Home" component={ HomeStack } />
     <Drawer.Screen name="Attendance Report">
-      {props => (<ARScreen {...props} user = {user} />)}
+      {props => (<ARStack {...props} user = {user} />)}
     </Drawer.Screen>
     <Drawer.Screen name="My Profile" component={ Profile } />
   </Drawer.Navigator>
