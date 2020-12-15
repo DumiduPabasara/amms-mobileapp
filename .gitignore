@@ -66,5 +66,3 @@ web-build/
 # Firebase
 /src/firebase
 
-#api
-/src/api
