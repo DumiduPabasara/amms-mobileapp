@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { ScrollView, Text, Button, StyleSheet, Alert } from 'react-native';
+import { ScrollView, Text, Button, StyleSheet, Alert, View } from 'react-native';
 import { ListItem, Avatar, Card } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale';
 import { Loading } from '../../loading';
@@ -101,10 +101,11 @@ class Courses extends Component {
     const marked = false;
 
     return (
-      <ScrollView>
+      <View>
         <Card>
           <Card.FeaturedSubtitle style={ { color: '#1e90ff', justifyContent: 'center' } }>Your Courses</Card.FeaturedSubtitle>
           <Card.Divider />
+          <ScrollView>
           {
             sortedBasedOnActive(courses).map((l) => (
               <ListItem
@@ -128,15 +129,17 @@ class Courses extends Component {
                 </Avatar>
                 <ListItem.Content >
                   <ListItem.Title>{ l.code }</ListItem.Title>
-                  <ListItem.Subtitle>{ l.name }</ListItem.Subtitle>
+                  <ListItem.Subtitle style={isActive(l.schedule) ? styles.activeFontSize : null} >{ l.name }</ListItem.Subtitle>
+                  { isActive(l.schedule) ? <ListItem.Subtitle>Today's Lecture : Introduction to the Programming Languages</ListItem.Subtitle> : null}
                 </ListItem.Content>
                 { isActive(l.schedule) ? <ListItem.Chevron color="blue" /> : null }
                 {/*<Text>{isActive(l.schedule).toString()}</Text>*/}
               </ListItem>
             ))
           }
+          </ScrollView>
         </Card>
-      </ScrollView>
+      </View>
     )
   }
 };
@@ -154,6 +157,9 @@ const styles = StyleSheet.create({
     color: '#fff8dc',
     textAlign: 'center',
     justifyContent: 'center'
+  },
+  activeFontSize : {
+    fontSize: 20
   }
 
 });

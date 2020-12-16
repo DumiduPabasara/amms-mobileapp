@@ -1,9 +1,7 @@
-
 import React, { useEffect } from 'react';
 import { ScrollView, Text, Button, StyleSheet, Alert } from 'react-native';
 import { ListItem, Avatar, Card } from 'react-native-elements';
 import { LinearGradient } from "expo-linear-gradient";
-
 
 export default function DetailedReport( {navigation, route}) {
 
@@ -16,10 +14,8 @@ export default function DetailedReport( {navigation, route}) {
 
     }, []);
 
-    const lecture = [
-        {
-          code: ''
-        },
+    const lectures = [
+    
         {
           name: 'CSC2122',
           avatar_url: '../../../images/red.jpg',
@@ -39,20 +35,17 @@ export default function DetailedReport( {navigation, route}) {
         >
             <ScrollView>
             {
-                    courses.map((l) => (
+                    lectures.map((l) => (
                         <ListItem
-                            key={l.code}
-                            Component={TouchableScale}
+                            key={l.name}
                             bottomDivider
-                            friction={90} //
-                            tension={100} // These props are passed to the parent component (here TouchableScale)
                             activeScale={0.95} //
                             linearGradientProps={{
-                                colors: [ choseColor1(l.code), choseColor2(l.code) ],
+                                colors: [ 'green', 'limegreen' ],
                                 start: { x: 1, y: 0 },
                                 end: { x: 0.2, y: 0 },
                             }}
-                            onPress = {() => this.props.navigation.navigate('DetailedReport_Screen', { courseCode: l.code } )}
+                            //onPress = {() => this.props.navigation.navigate('DetailedReport_Screen', { courseCode: l.code } )}
                         >
 
                             <Text style={{ fontSize: 20}} >{l.eligible}%</Text>
@@ -66,7 +59,6 @@ export default function DetailedReport( {navigation, route}) {
                                 </ListItem.Subtitle>
                                 
                             </ListItem.Content>
-                            <ListItem.Chevron color="white" />
                         </ListItem>
                     ))
                 }

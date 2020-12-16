@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { ScrollView, Text, StyleSheet } from 'react-native';
 import { Card } from 'react-native-elements';
 import Courses from './courses';
 import * as Animatable from 'react-native-animatable';
@@ -17,7 +17,7 @@ const HomeScreen = ({ navigation }) => {
       start={[0.1, 0.1]}
       style={styles.mainBody}
     >
-      <View >
+      <ScrollView >
         <Animatable.View animation="slideInDown" duration={ 1500 } delay={ 500 }>
           <Card>
             <Card.FeaturedTitle style={ { color: '#1e90ff' } }>Hello { user.firstName } { user.username }</Card.FeaturedTitle>
@@ -26,7 +26,7 @@ const HomeScreen = ({ navigation }) => {
         <Animatable.View animation="lightSpeedIn" duration={ 1500 } delay={ 900 }>
           <Courses navigation={ navigation } user={ user } />
         </Animatable.View>
-      </View>
+      </ScrollView>
     </LinearGradient>
   )
 }
