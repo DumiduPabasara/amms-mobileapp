@@ -83,12 +83,20 @@ class Courses extends Component {
   
     const sortedBasedOnActive = (courses) => {
 
-      let activeCoursesA = [];
+      const { day, time } = getDayAndTime();
 
+      let coursesTodayA = [];
+      let coursesOtherA = [];
+      let activeCoursesA = [];
       let notActiveCourseA = [];
 
-      activeCoursesA = courses.filter(course => isActive(course.schedule));
-      notActiveCourseA = courses.filter(course => !isActive(course.schedule));
+      coursesTodayA = courses.filter(course => course.schedule.day === day);
+      coursesOtherA = courses.filter(course => course.schedule.day !== day).sort((a,b) => a.schedule.day - b.schedule.day);
+
+      let sortedCoursesToday = [...coursesTodayA, ...coursesOtherA];
+
+      activeCoursesA = sortedCoursesToday.filter(course => isActive(course.schedule));
+      notActiveCourseA = sortedCoursesToday.filter(course => !isActive(course.schedule));
 
       let sortedCourses = [...activeCoursesA, ...notActiveCourseA];
 
@@ -124,6 +132,7 @@ class Courses extends Component {
                 onPress={ isActive(l.schedule) ? ( marked ? () => Alert.alert('Attendance is already marked for this course' ) : () => { this.props.navigation.navigate('QRScanner_screen', { courseCode: l.code }) }) : () => Alert.alert('Course not available at the moment' ) }
               >
                 <Avatar size={ 68 } rounded activeOpacity={ 0.7 } containerStyle={{justifyContent:'center', alignSelf:'center', alignContent:'center'}}>
+                  {isActive(l.schedule) ? <Text style={{color: '#fff8dc', textAlign: 'center' }}>now</Text> : <Text style={{color: '#fff8dc', textAlign: 'center' }}>at </Text> }
                   <Text style={styles.timeStyle}>{l.schedule.startTime.toString()} - {(l.schedule.startTime+l.schedule.duration).toString()}</Text>
                   <Text style={styles.timeStyle}>{chooseDay(l.schedule.day)}</Text>
                 </Avatar>
