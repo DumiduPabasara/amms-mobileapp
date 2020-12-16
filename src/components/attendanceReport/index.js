@@ -97,8 +97,8 @@ class ARScreen extends PureComponent {
                             onPress = {() => this.props.navigation.navigate('DetailedReport_Screen', { courseCode: l.code } )}
                         >
 
-                            <Text style={{ fontSize: 20}} >{l.eligible}%</Text>
-                            
+                            {/*<Text style={{ fontSize: 20}} >{l.eligible}%</Text>*/}
+                            <Text style={{ fontSize: 20}} >80%</Text>
                             <ListItem.Content >
                                 <ListItem.Title style={{ color: '#faf0e6', fontWeight: 'bold' }}>
                                     { l.code }
