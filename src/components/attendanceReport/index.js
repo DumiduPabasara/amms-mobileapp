@@ -6,6 +6,7 @@ import TouchableScale from 'react-native-touchable-scale';
 import { baseUrl } from '../../api';
 import { LinearGradient } from "expo-linear-gradient";
 import * as Animatable from 'react-native-animatable';
+import Loading from '../loading';
 
 class ARScreen extends PureComponent {
 
@@ -32,7 +33,7 @@ class ARScreen extends PureComponent {
     
     render() {
 
-        const { courses } = this.state;
+        const { courses, loading } = this.state;
 
         const choseColor1 = (code) => {
 
@@ -75,45 +76,47 @@ class ARScreen extends PureComponent {
                 style={styles.mainBody}
             >
             <ScrollView >
-            
-            <Animatable.View animation="bounceInRight" duration={ 1500 } delay={ 500 }>
-            <Card>
-                <Card.FeaturedTitle style={ { color: '#1e90ff', justifyContent: 'center' } }>My Attendance Report</Card.FeaturedTitle>
-                <Card.Divider />
-                {
-                    courses.map((l) => (
-                        <ListItem
-                            key={l.code}
-                            Component={TouchableScale}
-                            bottomDivider
-                            friction={90} //
-                            tension={100} // These props are passed to the parent component (here TouchableScale)
-                            activeScale={0.95} //
-                            linearGradientProps={{
-                                colors: [ choseColor1(l.code), choseColor2(l.code) ],
-                                start: { x: 1, y: 0 },
-                                end: { x: 0.2, y: 0 },
-                            }}
-                            onPress = {() => this.props.navigation.navigate('DetailedReport_Screen', { courseCode: l.code } )}
-                        >
+            { loading ? <Loading /> 
+                :
+                <Animatable.View animation="bounceInRight" duration={ 1500 } delay={ 500 }>
+                <Card>
+                    <Card.FeaturedTitle style={ { color: '#1e90ff', justifyContent: 'center' } }>My Attendance Report</Card.FeaturedTitle>
+                    <Card.Divider />
+                    {
+                        courses.map((l) => (
+                            <ListItem
+                                key={l.code}
+                                Component={TouchableScale}
+                                bottomDivider
+                                friction={90} //
+                                tension={100} // These props are passed to the parent component (here TouchableScale)
+                                activeScale={0.95} //
+                                linearGradientProps={{
+                                    colors: [ choseColor1(l.code), choseColor2(l.code) ],
+                                    start: { x: 1, y: 0 },
+                                    end: { x: 0.2, y: 0 },
+                                }}
+                                onPress = {() => this.props.navigation.navigate('DetailedReport_Screen', { courseCode: l.code } )}
+                            >
 
-                            {/*<Text style={{ fontSize: 20}} >{l.eligible}%</Text>*/}
-                            <Text style={{ fontSize: 20}} >80%</Text>
-                            <ListItem.Content >
-                                <ListItem.Title style={{ color: '#faf0e6', fontWeight: 'bold' }}>
-                                    { l.code }
-                                </ListItem.Title>
-                                <ListItem.Subtitle style={{ color: '#ffffe0', flex:1, flexDirection:'row' }}>
-                                    { l.name }  
-                                </ListItem.Subtitle>
-                                
-                            </ListItem.Content>
-                            <ListItem.Chevron color="white" />
-                        </ListItem>
-                    ))
-                }
-            </Card>
-            </Animatable.View>
+                                {/*<Text style={{ fontSize: 20}} >{l.eligible}%</Text>*/}
+                                <Text style={{ fontSize: 20}} >80%</Text>
+                                <ListItem.Content >
+                                    <ListItem.Title style={{ color: '#faf0e6', fontWeight: 'bold' }}>
+                                        { l.code }
+                                    </ListItem.Title>
+                                    <ListItem.Subtitle style={{ color: '#ffffe0', flex:1, flexDirection:'row' }}>
+                                        { l.name }  
+                                    </ListItem.Subtitle>
+                                    
+                                </ListItem.Content>
+                                <ListItem.Chevron color="white" />
+                            </ListItem>
+                        ))
+                    }
+                </Card>
+                </Animatable.View>
+            }
             </ScrollView>
             </LinearGradient>
         

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { ScrollView, Text, Button, StyleSheet, Alert, View } from 'react-native';
 import { ListItem, Avatar, Card } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale';
-import { Loading } from '../../loading';
+import Loading from '../../loading';
 import moment from 'moment';
 import { baseUrl } from '../../../api';
 
@@ -30,7 +30,7 @@ class Courses extends Component {
 
   render() {
 
-    const { courses } = this.state;
+    const { courses, loading } = this.state;
 
     const getDayAndTime = () => {
       const m = moment();
@@ -83,7 +83,7 @@ class Courses extends Component {
   
     const sortedBasedOnActive = (courses) => {
 
-      const { day, time } = getDayAndTime();
+      const { day } = getDayAndTime();
 
       let coursesTodayA = [];
       let coursesOtherA = [];
@@ -108,7 +108,12 @@ class Courses extends Component {
 
     const marked = false;
 
-    return (
+    return loading ? (
+    
+        <Loading /> 
+        
+      ) 
+      : (
       <View>
         <Card>
           <Card.FeaturedSubtitle style={ { color: '#1e90ff', justifyContent: 'center' } }>Your Courses</Card.FeaturedSubtitle>
@@ -169,7 +174,12 @@ const styles = StyleSheet.create({
   },
   activeFontSize : {
     fontSize: 20
-  }
+  },
+  mainBody: {
+		flex: 1,
+		justifyContent: 'center',
+		alignContent: 'center'
+	}
 
 });
 

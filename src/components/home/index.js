@@ -29,7 +29,7 @@ const HomeScreen = ( {navigation} ) => {
             <Card.FeaturedTitle style={ { color: '#1e90ff' } }>Hello { user.firstName } { user.username }</Card.FeaturedTitle>
           </Card>
         </Animatable.View>
-        <Animatable.View animation="lightSpeedIn" duration={ 1500 } delay={ 900 }>
+        <Animatable.View animation="zoomInUp" duration={ 1500 } delay={ 900 }>
           <Courses navigation={ navigation } user={ user }/>
         </Animatable.View>
       </ScrollView>

@@ -5,7 +5,6 @@ import {
 	StyleSheet,
 	Button,
 	Image,
-	TouchableOpacity,
 	Alert
 } from 'react-native';
 import { Icon, Input } from 'react-native-elements';
@@ -15,11 +14,14 @@ import { baseUrl } from '../../api';
 import { LinearGradient } from "expo-linear-gradient";
 
 import { userLoggedIn } from '../../store/login';
+import Loading from '../loading';
 
 class AuthScreen extends Form {
 	state = {
 		data: { username: '', password: '' },
-		errors: {}
+		errors: {},
+		loading : true,
+		btnPressed : false
 	};
 
 	doSubmit = async () => {
@@ -41,7 +43,7 @@ class AuthScreen extends Form {
 				})
 			);
 
-			this.props.navigation.push('AMMS-FOS');
+			this.setState({ loading: false });
 		} catch (err) {
 			console.log(err);
 			const errors = { ...this.state.errors };
@@ -52,13 +54,16 @@ class AuthScreen extends Form {
 	};
 	
 	render() {
+
+		const { loading, btnPressed } = this.state;
+
 		return (
 			<LinearGradient
                 colors={["#e0ffff", "#63a8e6"]}
                 start={[0.1, 0.1]}
                 style={styles.mainBody}
             >
-			<TouchableOpacity>
+			<View>
 				<View>
 					<Image
 						source={require('../../../images/3.png')}
@@ -90,8 +95,9 @@ class AuthScreen extends Form {
 					<View style={styles.formButton}>
 						<Button onPress={this.handleSubmit} title='Login' color='#1e90ff' />
 					</View>
+					{ loading && btnPressed ? <Loading /> : <View></View>}
 				</View>
-			</TouchableOpacity>
+			</View>
 			</LinearGradient>
 		);
 	}

@@ -4,7 +4,8 @@ import Joi from 'joi-browser';
 class Form extends Component {
 	state = {
 		data: {},
-		errors: {}
+		errors: {},
+		btnPressed: false
 	};
 
 	schema = {
@@ -42,7 +43,7 @@ class Form extends Component {
 		const errors = this.validate();
 		this.setState({ errors });
 		if (Object.keys(errors).length > 0) return;
-
+		this.setState( {btnPressed : true})
 		this.doSubmit();
 	};
 
