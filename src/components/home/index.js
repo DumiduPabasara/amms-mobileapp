@@ -7,9 +7,15 @@ import { useSelector } from 'react-redux';
 import { getLoggedInUserDetails } from '../../store/login';
 import { LinearGradient } from "expo-linear-gradient";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ( {navigation} ) => {
 
   const user = useSelector(getLoggedInUserDetails);
+
+  /*const Courses = React.forwardRef(({navigation}, ref) => (
+
+    <Courses navigation={ navigation } user={ user } ref={ref}/>
+
+  ));*/
 
   return (
     <LinearGradient
@@ -24,7 +30,7 @@ const HomeScreen = ({ navigation }) => {
           </Card>
         </Animatable.View>
         <Animatable.View animation="lightSpeedIn" duration={ 1500 } delay={ 900 }>
-          <Courses navigation={ navigation } user={ user } />
+          <Courses navigation={ navigation } user={ user }/>
         </Animatable.View>
       </ScrollView>
     </LinearGradient>
