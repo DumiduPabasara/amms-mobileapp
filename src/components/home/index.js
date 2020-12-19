@@ -5,7 +5,7 @@ import Courses from './courses';
 import * as Animatable from 'react-native-animatable';
 import { useSelector } from 'react-redux';
 import { getLoggedInUserDetails } from '../../store/login';
-import { LinearGradient } from "expo-linear-gradient";
+import { LinearGradient }  from 'expo-linear-gradient';
 
 const HomeScreen = ( {navigation} ) => {
 
