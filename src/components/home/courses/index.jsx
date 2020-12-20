@@ -130,9 +130,9 @@ class Courses extends Component {
                 tension={100} // These props are passed to the parent component (here TouchableScale)
                 activeScale={0.95} //
                 linearGradientProps={{
-                    colors: isActive(l.schedule) ? ['#adff2f','#32cd32'] : ['#ffd700','#ffa500'],
-                    start: { x: 1, y: 0 },
-                    end: { x: 0.2, y: 0 },
+                  colors: isActive(l.schedule) ? ['#adff2f','#32cd32'] : ['#ffd700','#ffa500'],
+                  start: { x: 1, y: 0 },
+                  end: { x: 0.2, y: 0 },
                 }}
                 onPress={ isActive(l.schedule) ? ( marked ? () => Alert.alert('Attendance is already marked for this course' ) : () => { this.props.navigation.navigate('QRScanner_screen', { courseCode: l.code }) }) : () => Alert.alert('Course not available at the moment' ) }
               >

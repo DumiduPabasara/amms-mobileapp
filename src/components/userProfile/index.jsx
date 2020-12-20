@@ -47,10 +47,10 @@ const Profile = () => {
 
   return (
     <LinearGradient
-                colors={["#e0ffff", "#63a8e6"]}
-                start={[0.1, 0.1]}
-                style={styles.mainBody}
-      >
+      colors={["#e0ffff", "#63a8e6"]}
+      start={[0.1, 0.1]}
+      style={styles.mainBody}
+    >
     <ScrollView >
       <Animatable.View animation="fadeInDown" duration={ 1000 } delay={ 500 }>
         <Card

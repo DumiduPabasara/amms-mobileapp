@@ -32,7 +32,7 @@ export default class App extends Component{
     const { courseCode } = this.props.route.params;
     const courseId = courseCode.toString();
 
-    const barCodeScanned = ({ data, courseId }) => {
+    const barCodeScanned = ({ data }) => {
       //Access the Data
       this.setState({ scanned: true});
     
@@ -51,7 +51,7 @@ export default class App extends Component{
       }
   
       else {
-        Alert.alert(`Invalid QR code scanned for ${courseId} !`);
+        Alert.alert(`Invalid QR code scanned for the course ${courseId} !`);
       }
   
       /*alert(`Bar code with type ${type} and data ${data} has been scanned!`)
@@ -73,6 +73,7 @@ export default class App extends Component{
         </LinearGradient>
       );
     }
+
     if(CameraPermissionGranted === false){
         // Permission denied
       return ( 
@@ -88,6 +89,7 @@ export default class App extends Component{
         
       );
     }
+
     if(CameraPermissionGranted === true){
       // Got the permission, time to scan
       return (
