@@ -1,39 +1,28 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, Modal, Alert } from 'react-native';
+import React from 'react';
+import RenderNotification from './renderNotification';
+import { View, Text, StyleSheet, ScrollView, Modal, Alert, FlatList } from 'react-native';
 import { Card, Badge } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
-import TouchableScale from 'react-native-touchable-scale';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import AbsentLectures from './absentLectures';
 
-class NotificationScreen extends Component {
+class NotificationScreen extends RenderNotification {
 
     state = {
         absentLecCount : 1,
         lecUpdatesCount : 2,
         meetingCount: 0,
         submittedExcusStateCount: 2,
-        modalVisible: false
+        modalVisible: false,
     }
     
-    setModalVisible = (visible) => {
+    setModalVisible = (visible,type) => {
         this.setState({ modalVisible: visible });
     }
 
-    /*setModalType = (type) => {
-
-        switch(type) {
-            case 'absent':
-                return <AbsentLectures />
-            default: 
-                return null;
-        }
-
-    }*/
 
     render() {
 
-        const { absentLecCount, lecUpdatesCount, meetingCount, submittedExcusStateCount, modalVisible } = this.state;
+        const { absentLecCount, lecUpdatesCount, meetingCount, submittedExcusStateCount, modalVisible, componentType } = this.state;
 
         return(
             <LinearGradient
@@ -65,16 +54,22 @@ class NotificationScreen extends Component {
                         <Card.FeaturedSubtitle style={styles.subtitle}>You got {submittedExcusStateCount} new notifications</Card.FeaturedSubtitle>   
                     </Card>
                 </View>
-                <View style={styles.centeredView}>
+                <View>
                     <Modal
                         animationType="slide"
-                        transparent={true}
+                        transparent={false}
                         visible={modalVisible}
                         onRequestClose={() => {
                             this.setModalVisible(false);
                         }}
                     >
-                        <Text>Modal</Text>
+                        <View style={styles.modal}>
+                            <FlatList
+                                data={this.lectures}
+                                renderItem={this.renderAbsentList}
+                                keyExtractor={lecture => lecture.name}
+                            />
+                        </View>
                     </Modal>
                 </View>
             </LinearGradient>
@@ -120,6 +115,10 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
         elevation: 5
     },
+    modal: {
+        justifyContent: 'center',
+        margin: 20
+      },
   
 });
 

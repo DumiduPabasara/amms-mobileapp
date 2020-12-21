@@ -18,11 +18,11 @@ export default function DetailedReport( {navigation, route}) {
     const lectures = [
     
         {
-          name: 'Lecture 1',
-          subtitle: 'Introduction to Programming Languages',
-          time:'10.00',
-          day: 'Nov 22',
-          marked: false
+            name: 'Lecture 1',
+            subtitle: 'Introduction to Programming Languages',
+            time:'10.00',
+            day: 'Nov 22',
+            marked: false
         },
 
         {
@@ -31,9 +31,9 @@ export default function DetailedReport( {navigation, route}) {
             time:'10.02',
             day: 'Nov 30',
             marked: true
-          },
+        },
         
-      ]
+    ]
 
 
     return (
