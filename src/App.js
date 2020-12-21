@@ -76,7 +76,13 @@ const App = () => {
           </>
           :
           //login
-          <Stack.Screen name="AuthScreen">
+          <Stack.Screen 
+            name="AuthScreen" 
+            options = { 
+              {headerTitle: null},
+              {headerShown: false}
+            }
+          >
             { props => (<AuthScreen { ...props } dispatch={ dispatch } />) }
           </Stack.Screen>
         }

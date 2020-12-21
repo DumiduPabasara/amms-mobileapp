@@ -173,7 +173,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   activeFontSize : {
-    fontSize: 20
+    fontSize: 20,
+    justifyContent: 'center',
+    alignSelf: 'center'
   },
   mainBody: {
 		flex: 1,

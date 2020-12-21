@@ -17,6 +17,11 @@ import { userLoggedIn } from '../../store/login';
 import Loading from '../loading';
 
 class AuthScreen extends Form {
+
+	constructor(props) {
+		super(props)
+		this.inputPassword = React.createRef();
+	}
 	state = {
 		data: { username: '', password: '' },
 		errors: {},
@@ -28,7 +33,7 @@ class AuthScreen extends Form {
 		const { username, password } = this.state.data;
 		try {
 			const { data } = await axios.post(
-				`${baseUrl}/api/users/${username}/${password}`
+				`${baseUrl}/api/users/${username.trim()}/${password}`
 			);
 
 			this.props.dispatch(
@@ -47,15 +52,26 @@ class AuthScreen extends Form {
 		} catch (err) {
 			console.log(err);
 			const errors = { ...this.state.errors };
-			errors.login = 'Invalid login, please try again';
+			errors.login = 'Invalid Username or Password, please try again';
 			this.setState({ errors });
-			Alert.alert(errors.login);
+			Alert.alert(
+				'Login Error !',
+				errors.login,
+				[
+					{
+						text: 'Ok',
+						onPress: () => this.setState({ btnPressed: false})
+					}
+				],
+				{cancelable: false}
+				
+			);
 		}
 	};
 	
 	render() {
 
-		const { loading, btnPressed } = this.state;
+		const { loading, btnPressed, errors } = this.state;
 
 		return (
 			<LinearGradient
@@ -81,16 +97,30 @@ class AuthScreen extends Form {
 						placeholder='Username'
 						leftIcon={<Icon name='user-o' type='font-awesome' />}
 						onChangeText={value => this.handleChange(value, 'username')}
-						value={this.state.data.username}
+						value={this.state.data.username.trim()}
 						containerStyle={styles.formInput}
+						returnKeyType="next"
+						autoCapitalize="none"
+						autoFocus
+						autoCompleteType='off'
+						errorMessage={errors['username']}
+						renderErrorMessage={true}
+						onEndEditing={() => { this.inputPassword.focus(); }}
+						
 					/>
 					<Input
+						ref={(input) => { this.inputPassword = input }}
 						placeholder='Password'
 						leftIcon={<Icon name='key' type='font-awesome' />}
 						onChangeText={value => this.handleChange(value, 'password')}
 						value={this.state.data.password}
 						secureTextEntry
 						containerStyle={styles.formInput}
+						autoCompleteType='off'
+						autoCapitalize="none"
+						errorMessage={errors['password']}
+						renderErrorMessage={true}
+						onEndEditing={this.handleSubmit}
 					/>
 					<View style={styles.formButton}>
 						<Button onPress={this.handleSubmit} title='Login' color='#1e90ff' />

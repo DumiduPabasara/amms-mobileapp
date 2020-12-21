@@ -28,7 +28,7 @@ class Form extends Component {
 
 	validateProperty = object => {
 		const schema = {
-			username: Joi.string().label('Username'),
+			username: Joi.string().trim().label('Username'),
 			password: Joi.string().min(8).label('Password')
 		};
 
