@@ -44,7 +44,8 @@
     "redux-promise": "^0.6.0",
     "reselect": "^4.0.0",
     "yup": "^0.32.8",
-    "expo-linear-gradient": "~8.4.0"
+    "expo-linear-gradient": "~8.4.0",
+    "expo-constants": "~9.3.3"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
