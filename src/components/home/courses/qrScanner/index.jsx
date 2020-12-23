@@ -20,7 +20,8 @@ export default class App extends Component{
     course: {},
     active: false,
     marked: false,
-    password: '' 
+    password: '',
+    loading: true 
   }
 
   
@@ -46,7 +47,7 @@ export default class App extends Component{
 			const active = isActive(data.schedule);
 			const marked = await this.isMarked(this.props.route.params.id, course.id);
 
-			this.setState({ course, active, password: data.password, marked });
+			this.setState({ course, active, password: data.password, marked, loading: false });
 		} catch (err) {
 			console.error(err);
     }
@@ -86,7 +87,7 @@ export default class App extends Component{
 
   render(){
 
-    const { CameraPermissionGranted, scanned, password } = this.state;
+    const { CameraPermissionGranted, scanned, password, loading, marked } = this.state;
     const { courseCode } = this.props.route.params;
     const courseId = courseCode.toString();
 
@@ -125,7 +126,7 @@ export default class App extends Component{
           start={[0.1, 0.1]}
           style={styles.container}
         >
-          <View style={styles.container}>
+          <View>
               <Text>Requesting For Camera permission</Text>
               <Loading />
           </View> 
@@ -151,27 +152,35 @@ export default class App extends Component{
 
     if(CameraPermissionGranted === true){
       // Got the permission, time to scan
-      return (
+      return loading ? 
         <LinearGradient
           colors={["#e0ffff", "#63a8e6"]}
           start={[0.1, 0.1]}
           style={styles.mainBody}
         >
+          <Loading />
+        </LinearGradient>
+      : (
+        <LinearGradient
+          colors={["#e0ffff", "#63a8e6"]}
+          start={[0.1, 0.1]}
+          style={styles.mainBody}
+        > 
           <View style = {{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
           }}>
-            <BarCodeScanner
-              onBarCodeScanned = { scanned ? undefined : barCodeScanned}
-            >
-              <Image
-                style={styles.qr}
-                source={require('../../../../../images/QR.png')}
-              />
+          <BarCodeScanner
+            onBarCodeScanned = { scanned ? undefined : barCodeScanned}
+          >
+            <Image
+              style={styles.qr}
+              source={require('../../../../../images/QR.png')}
+            />
             </BarCodeScanner>
             {scanned && <View><Button style={{ marginTop: 20}} title={'Tap to Scan Again'} onPress={() => this.setState({ scanned : false})}/></View>}
-          </View>
+          </View> 
         </LinearGradient>
       );
       
