@@ -4,6 +4,9 @@ import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { LinearGradient } from "expo-linear-gradient";
 import Loading from '../../../loading';
+import { isActive } from '../../../common/scripts';
+import { baseUrl } from '../../../../api';
+import axios from 'axios';
 
 const { width } = Dimensions.get('window');
 
@@ -13,22 +16,77 @@ export default class App extends Component{
 
   state = {
     CameraPermissionGranted: null,
-    scanned: false  
+    scanned: false,
+    course: {},
+    active: false,
+    marked: false,
+    password: '' 
   }
 
   
   async componentDidMount() {
+
     // Ask for camera permission
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({ CameraPermissionGranted: status === "granted" ? true : false });
+
+    //Getting courses from db
+    try {
+			const code = this.props.route.params.courseCode;
+			const { data } = await axios.get(
+				`${baseUrl}/api/courses/${code}`
+			);
+
+			const course = {
+				id: data._id,
+				code: data.code,
+				name: data.name
+			};
+
+			const active = isActive(data.schedule);
+			const marked = await this.isMarked(this.props.route.params.id, course.id);
+
+			this.setState({ course, active, password: data.password, marked });
+		} catch (err) {
+			console.error(err);
+    }
+    
   }
+
+  isMarked = async (student, course) => {
+		try {
+			const { data } = await axios.get(
+				`${baseUrl}/api/attendance/${student}/${course}`
+			);
+			return data;
+		} catch (err) {
+			console.error(err.message);
+			return false;
+		}
+  };
+  
+  markAttendance = async password => {
+		if (password === this.state.password && !this.state.marked) {
+			const obj = {
+				student: this.props.route.params.id,
+				course: this.state.course.id
+			};
+
+			try {
+				await axios.post('http://localhost:9000/api/attendance', obj);
+				this.setState({ marked: true });
+			} catch (err) {
+				console.error(err);
+			}
+		}
+	};
 
 
   
 
   render(){
 
-    const { CameraPermissionGranted, scanned } = this.state;
+    const { CameraPermissionGranted, scanned, password } = this.state;
     const { courseCode } = this.props.route.params;
     const courseId = courseCode.toString();
 
@@ -45,8 +103,9 @@ export default class App extends Component{
   
       /*console.log(scannedCourseId.includes(courseId));*/
   
-      if ( scannedCourseId.includes(courseId) ) {
+      if ( scannedCourseId.includes(courseId) && (data === password) ) {
   
+        this.markAttendance(data);
         Alert.alert(`Your Attendance is marked for the course ${courseId}`);
       }
   

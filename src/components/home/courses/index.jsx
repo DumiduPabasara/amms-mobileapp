@@ -4,8 +4,8 @@ import { ScrollView, Text, Button, StyleSheet, Alert, View } from 'react-native'
 import { ListItem, Avatar, Card } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale';
 import Loading from '../../loading';
-import moment from 'moment';
 import { baseUrl } from '../../../api';
+import { isActive, getDayAndTime } from '../../common/scripts';
 
 class Courses extends Component {
   state = { courses: [], loading: true };
@@ -32,32 +32,8 @@ class Courses extends Component {
 
     const { courses, loading } = this.state;
 
-    const getDayAndTime = () => {
-      const m = moment();
-      return { day: m.day(), time: m.hour() };
-    };
-
     console.log(getDayAndTime());
-
-    const isActive = schedule => {
-
-      const { day, time } = getDayAndTime();
-
-      const active =
-        schedule.day === day &&
-        time >= schedule.startTime &&
-        time < schedule.startTime + schedule.duration;
-
-      if (!active) {
-        return false;
-      }
-
-      else {
-        return true;
-      }
-
-
-    };
+    
 
     const chooseDay = (varDay) => {
 
@@ -134,7 +110,7 @@ class Courses extends Component {
                   start: { x: 1, y: 0 },
                   end: { x: 0.2, y: 0 },
                 }}
-                onPress={ isActive(l.schedule) ? ( marked ? () => Alert.alert('Attendance is already marked for this course' ) : () => { this.props.navigation.navigate('QRScanner_screen', { courseCode: l.code }) }) : () => Alert.alert('Course not available at the moment' ) }
+                onPress={ isActive(l.schedule) ? ( marked ? () => Alert.alert('Attendance is already marked for this course' ) : () => { this.props.navigation.navigate('QRScanner_screen', { courseCode: l.code, id: this.props.user.id }) }) : () => Alert.alert('Course not available at the moment' ) }
               >
                 <Avatar size={ 68 } rounded activeOpacity={ 0.7 } containerStyle={{justifyContent:'center', alignSelf:'center', alignContent:'center'}}>
                   {isActive(l.schedule) ? <Text style={{color: '#fff8dc', textAlign: 'center' }}>now</Text> : <Text style={{color: '#fff8dc', textAlign: 'center' }}>at </Text> }
