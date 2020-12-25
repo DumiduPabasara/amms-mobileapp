@@ -4,6 +4,7 @@ import { ScrollView, Text, Button, StyleSheet, Alert, View } from 'react-native'
 import { ListItem, Avatar, Card } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale';
 import Loading from '../../loading';
+import moment from 'moment';
 import { baseUrl } from '../../../api';
 import { isActive, getDayAndTime } from '../../common/scripts';
 
@@ -28,34 +29,25 @@ class Courses extends Component {
     }
   }
 
+  /*timeout = () => {
+    const { time } = getDayAndTime();
+  }*/
+
+  /*setTimeout(() => {
+    window.location.reload();
+  }, 1000);*/
+
+  chooseDay = (varDay) => {
+
+    return moment(varDay, 'day').format('ddd');
+
+  };
+
   render() {
 
     const { courses, loading } = this.state;
 
     console.log(getDayAndTime());
-    
-
-    const chooseDay = (varDay) => {
-
-      switch(varDay) {
-        case 1:
-          return 'Mon';
-        case 2:
-          return 'Tue';
-        case 3:
-          return 'Wed';
-        case 4:
-          return 'Thu';
-        case 5:
-          return 'Fri';
-        case 6:
-          return 'Sat';
-        default:
-          return 'Sun';
-        
-      }
-
-    };
   
     const sortedBasedOnActive = (courses) => {
 
@@ -106,23 +98,21 @@ class Courses extends Component {
                 tension={100} // These props are passed to the parent component (here TouchableScale)
                 activeScale={0.95} //
                 linearGradientProps={{
-                  colors: isActive(l.schedule) ? ['#adff2f','#32cd32'] : ['#ffd700','#ffa500'],
+                  colors: isActive(l.schedule) ? ['#adff2f','#32cd32'] : ['#ffd700', '#ffa500' ],
                   start: { x: 1, y: 0 },
                   end: { x: 0.2, y: 0 },
                 }}
                 onPress={ isActive(l.schedule) ? ( marked ? () => Alert.alert('Attendance is already marked for this course' ) : () => { this.props.navigation.navigate('QRScanner_screen', { courseCode: l.code, id: this.props.user.id }) }) : () => Alert.alert('Course not available at the moment' ) }
               >
-                <Avatar size={ 68 } rounded activeOpacity={ 0.7 } containerStyle={{justifyContent:'center', alignSelf:'center', alignContent:'center'}}>
-                  {isActive(l.schedule) ? <Text style={{color: '#fff8dc', textAlign: 'center' }}>now</Text> : <Text style={{color: '#fff8dc', textAlign: 'center' }}>at </Text> }
-                  <Text style={styles.timeStyle}>{l.schedule.startTime.toString()} - {(l.schedule.startTime+l.schedule.duration).toString()}</Text>
-                  <Text style={styles.timeStyle}>{chooseDay(l.schedule.day)}</Text>
+                <Avatar size={68} containerStyle={{ alignItems:'center'}}>
+                {isActive(l.schedule) ? <Text style={styles.timeStyle}>now{"\n"}{moment(l.schedule.startTime, 'h').format('h a')} - {moment(l.schedule.startTime+l.schedule.duration, 'h').format('h a')}{"\n"}{this.chooseDay(l.schedule.day)}</Text> : <Text style={styles.timeStyleD}>{this.chooseDay(l.schedule.day)}</Text>}
                 </Avatar>
                 <ListItem.Content >
                   <ListItem.Title>{ l.code }</ListItem.Title>
                   <ListItem.Subtitle style={isActive(l.schedule) ? styles.activeFontSize : null} >{ l.name }</ListItem.Subtitle>
                   { isActive(l.schedule) ? <ListItem.Subtitle>Today's Lecture : Introduction to the Programming Languages</ListItem.Subtitle> : null}
                 </ListItem.Content>
-                { isActive(l.schedule) ? <ListItem.Chevron color="blue" /> : null }
+                { isActive(l.schedule) ? <ListItem.Chevron color="#fffaf0" /> : <Text style={styles.timeStyleN}>at{"\n"}{moment(l.schedule.startTime, 'h').format('h a')} - {moment(l.schedule.startTime+l.schedule.duration, 'h').format('h a')}</Text> }
                 {/*<Text>{isActive(l.schedule).toString()}</Text>*/}
               </ListItem>
             ))
@@ -143,10 +133,22 @@ const styles = StyleSheet.create({
     backgroundColor: 'red'
   },
   timeStyle: {
-    fontSize: 20,
-    color: '#fff8dc',
+    fontSize: 10,
+    color: '#fffaf0',
     textAlign: 'center',
     justifyContent: 'center'
+  },
+  timeStyleN: {
+    fontSize: 12,
+    color: '#fffaf0',
+    textAlign: 'center',
+    justifyContent: 'center'
+  },
+  timeStyleD: {
+    fontSize: 17,
+    color: '#fffaf0',
+    textAlign: 'center',
+    marginBottom: 15
   },
   activeFontSize : {
     fontSize: 20,

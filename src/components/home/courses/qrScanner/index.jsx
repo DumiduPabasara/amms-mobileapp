@@ -118,9 +118,29 @@ export default class App extends Component {
 
 			if (scannedCourseId.includes(courseId) && data === password) {
 				this.markAttendance(data);
-				Alert.alert(`Your Attendance is marked for the course ${courseId}`);
+				Alert.alert(
+					'Successfully Marked !',
+					`Your Attendance is marked for the course ${courseId}.`,
+					[
+						{
+							text: 'Ok',
+							onPress: () => console.log('Ok Pressed')
+						}
+					],
+					{cancelable: false}
+				);
 			} else {
-				Alert.alert(`Invalid QR code scanned for the course ${courseId} !`);
+				Alert.alert(
+					'Error !',
+					`Invalid QR code scanned for the course ${courseId} !. Please scan again.`,
+					[
+						{
+							text: 'Ok',
+							onPress: () => console.log('Cancel for scan again')
+						}
+					]
+
+				);
 			}
 
 			/*alert(`Bar code with type ${type} and data ${data} has been scanned!`)
@@ -217,117 +237,3 @@ const styles = StyleSheet.create({
 	}
 });
 
-/*import React, {  Component } from 'react';
-import { Text, View, StyleSheet, Button, Dimensions, Image, Alert} from 'react-native';
-import Loading from '../../../loading';
-import { BarCodeScanner } from 'expo-barcode-scanner';
-
-class QRScannerScreen extends Component {
-
-  /*const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(false);
-
-  state = {
-    hasPermission : null,
-    setHasPermission : null,
-    scanned : false,
-    setScanned: false,
-  }
-
-  componentDidMount() {
-    const { status } = await BarCodeScanner.requestPermissionsAsync();
-    if(status === 'granted') {
-      this.setState({ setHasPermission : status});
-    }
-  }
-
-  render() {
-
-    const { width } = Dimensions.get('window');
-    const qrSize = width * 1.2;
-
-    const handleBarCodeScanned = ({ data }) => {
-
-      setScanned(true);
-  
-      let scannedData = data;
-  
-      let scannedCourseId = scannedData.slice(0,7);
-  
-      /*console.log(scannedCourseId);*/
-
-/*console.log(scannedCourseId.includes(courseId));
-  
-      if ( scannedCourseId.includes(courseId) ) {
-  
-        Alert.alert(`Your Attendance is marked for the course ${courseId}`);
-      }
-  
-      else {
-        Alert.alert(`Invalid QR code scanned for ${courseId} !`);
-      }
-  
-      /*alert(`Bar code with type ${type} and data ${data} has been scanned!`)
-  
-    };
-
-    if (hasPermission === null) {
-
-      return (
-        <View>
-          <Text>Requesting for camera permission</Text>
-          <Loading />
-        </View>
-      );
-    }
-
-    else if (hasPermission === false) {
-      return <Text>No access to camera</Text>;
-    }
-
-    else {
-      return (
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-          }}>
-          <BarCodeScanner
-            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-            style={[StyleSheet.absoluteFill, styles.container]}
-          >
-            <Image
-              style={styles.qr}
-              source={require('../../../../../images/QR.png')}
-            />
-          </BarCodeScanner>
-    
-          {scanned && <Button title={'Tap to Scan Again'} onPress={() => this.setState({ setScanned : false})} />}
-        </View>
-      );
-    }
-
-
-  }
-    
-};
-
-
-const styles = StyleSheet.create({
-
-    container: {
-        flex: 1,
-        alignItems: 'center',
-      },
-      qr: {
-        marginTop: '10%',
-        marginBottom: '20%',
-        width: qrSize,
-        height: qrSize,
-      },
-
-})
-
-
-export default QRScannerScreen;*/

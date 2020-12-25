@@ -8,6 +8,7 @@ import { getLoggedInUserDetails } from '../../store/login';
 import { LinearGradient }  from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
+import { Colors } from 'react-native-paper';
 
 const wait = (timeout) => {
   return new Promise(resolve => {
@@ -36,7 +37,7 @@ const HomeScreen = ( {navigation} ) => {
       <ScrollView
         contentContainerStyle={styles.scrollView}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl refreshing={refreshing} colors={[Colors.blueA200]} onRefresh={onRefresh} />
         } 
       >
         <Animatable.View animation="slideInDown" duration={ 1500 } delay={ 500 }>
