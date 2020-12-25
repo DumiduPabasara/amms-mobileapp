@@ -92,14 +92,8 @@ export default class App extends Component {
 		}
 	};
 
-	render() {
-		const {
-			CameraPermissionGranted,
-			scanned,
-			password,
-			loading,
-			marked
-		} = this.state;
+	renderQrScanner = () => {
+		const { CameraPermissionGranted, scanned, loading, password } = this.state;
 		const { courseCode } = this.props.route.params;
 		const courseId = courseCode.toString();
 
@@ -124,10 +118,12 @@ export default class App extends Component {
 					[
 						{
 							text: 'Ok',
-							onPress: () => {this.props.navigation.navigate('Home_screen', { post : true })} //pass to home screen
+							onPress: () => {
+								this.props.navigation.navigate('Home_screen', { post: true });
+							} //pass to home screen
 						}
 					],
-					{cancelable: false}
+					{ cancelable: false }
 				);
 			} else {
 				Alert.alert(
@@ -139,7 +135,6 @@ export default class App extends Component {
 							onPress: () => console.log('Cancel for scan again')
 						}
 					]
-
 				);
 			}
 
@@ -216,6 +211,21 @@ export default class App extends Component {
 				</LinearGradient>
 			);
 		}
+	};
+
+	render() {
+		const { marked } = this.state;
+
+		return !marked ? this.renderQrScanner() : <Text>False</Text>;
+		// this.props.navigation.navigate('Home_screen', { post: true });
+
+		// !marked ? (
+		// 	renderQrScanner()
+		// ) : (
+		// 	<View>Attendance is already marked for this course</View>
+		// );
+
+		// !marked && renderQrScanner();
 	}
 }
 
@@ -236,4 +246,3 @@ const styles = StyleSheet.create({
 		alignContent: 'center'
 	}
 });
-

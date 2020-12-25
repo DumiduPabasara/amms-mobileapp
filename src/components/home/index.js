@@ -1,11 +1,11 @@
-import React , { useState } from 'react';
+import React, { useState } from 'react';
 import { ScrollView, Text, StyleSheet, RefreshControl } from 'react-native';
 import { Card } from 'react-native-elements';
 import Courses from './courses';
 import * as Animatable from 'react-native-animatable';
 import { useSelector } from 'react-redux';
 import { getLoggedInUserDetails } from '../../store/login';
-import { LinearGradient }  from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
 import { Colors } from 'react-native-paper';
@@ -16,9 +16,11 @@ const wait = (timeout) => {
   });
 }
 
-const HomeScreen = ( {navigation, route} ) => {
+const HomeScreen = ({ navigation, route }) => {
 
   //route takes from qrScreen as post to set to courses
+
+  console.log(route.params);
 
   const user = useSelector(getLoggedInUserDetails);
 
@@ -32,15 +34,15 @@ const HomeScreen = ( {navigation, route} ) => {
 
   return (
     <LinearGradient
-      colors={["#e0ffff", "#63a8e6"]}
-      start={[0.1, 0.1]}
-      style={styles.mainBody}
+      colors={ ["#e0ffff", "#63a8e6"] }
+      start={ [0.1, 0.1] }
+      style={ styles.mainBody }
     >
       <ScrollView
-        contentContainerStyle={styles.scrollView}
+        contentContainerStyle={ styles.scrollView }
         refreshControl={
-          <RefreshControl refreshing={refreshing} colors={[Colors.blueA200]} onRefresh={onRefresh} />
-        } 
+          <RefreshControl refreshing={ refreshing } colors={ [Colors.blueA200] } onRefresh={ onRefresh } />
+        }
       >
         <Animatable.View animation="slideInDown" duration={ 1500 } delay={ 500 }>
           <Card>
@@ -48,8 +50,7 @@ const HomeScreen = ( {navigation, route} ) => {
           </Card>
         </Animatable.View>
         <Animatable.View animation="zoomInUp" duration={ 1500 } delay={ 900 }>
-          {console.log(route.params?.post)}
-          <Courses navigation={ navigation } user={ user } markedQ={route.params?.post}/>
+          <Courses navigation={ navigation } user={ user } markedQ={ route.params?.post } />
         </Animatable.View>
       </ScrollView>
     </LinearGradient>
