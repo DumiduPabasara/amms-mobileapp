@@ -104,15 +104,15 @@ class Courses extends Component {
                 }}
                 onPress={ isActive(l.schedule) ? ( marked ? () => Alert.alert('Attendance is already marked for this course' ) : () => { this.props.navigation.navigate('QRScanner_screen', { courseCode: l.code, id: this.props.user.id }) }) : () => Alert.alert('Course not available at the moment' ) }
               >
-                <Avatar size={68} containerStyle={{ alignItems:'center'}}>
-                {isActive(l.schedule) ? <Text style={styles.timeStyle}>now{"\n"}{moment(l.schedule.startTime, 'h').format('h a')} - {moment(l.schedule.startTime+l.schedule.duration, 'h').format('h a')}{"\n"}{this.chooseDay(l.schedule.day)}</Text> : <Text style={styles.timeStyleD}>{this.chooseDay(l.schedule.day)}</Text>}
+                <Avatar size={50} containerStyle={{ alignItems:'center'}}>
+                {isActive(l.schedule) ? <Text style={styles.timeStyle}>now{"\n"}{"\n"}{moment(l.schedule.startTime, 'h').format('h a')} - {moment(l.schedule.startTime+l.schedule.duration, 'h').format('h a')}{"\n"}{"\n"}{this.chooseDay(l.schedule.day)}</Text> : <Text style={styles.timeStyleD}>{this.chooseDay(l.schedule.day)}</Text>}
                 </Avatar>
                 <ListItem.Content >
                   <ListItem.Title>{ l.code }</ListItem.Title>
                   <ListItem.Subtitle style={isActive(l.schedule) ? styles.activeFontSize : null} >{ l.name }</ListItem.Subtitle>
                   { isActive(l.schedule) ? <ListItem.Subtitle>Today's Lecture : Introduction to the Programming Languages</ListItem.Subtitle> : null}
                 </ListItem.Content>
-                { isActive(l.schedule) ? <ListItem.Chevron color="#fffaf0" /> : <Text style={styles.timeStyleN}>at{"\n"}{moment(l.schedule.startTime, 'h').format('h a')} - {moment(l.schedule.startTime+l.schedule.duration, 'h').format('h a')}</Text> }
+                { isActive(l.schedule) ? <ListItem.Chevron color="#e0ffff" /> : <Text style={styles.timeStyleN}>at{"\n"}{moment(l.schedule.startTime, 'h').format('h a')} - {moment(l.schedule.startTime+l.schedule.duration, 'h').format('h a')}</Text> }
                 {/*<Text>{isActive(l.schedule).toString()}</Text>*/}
               </ListItem>
             ))
@@ -134,19 +134,19 @@ const styles = StyleSheet.create({
   },
   timeStyle: {
     fontSize: 10,
-    color: '#fffaf0',
+    color: '#e0ffff',
     textAlign: 'center',
     justifyContent: 'center'
   },
   timeStyleN: {
     fontSize: 12,
-    color: '#fffaf0',
+    color: '#fafad2',
     textAlign: 'center',
     justifyContent: 'center'
   },
   timeStyleD: {
     fontSize: 17,
-    color: '#fffaf0',
+    color: '#e0ffff',
     textAlign: 'center',
     marginBottom: 15
   },
