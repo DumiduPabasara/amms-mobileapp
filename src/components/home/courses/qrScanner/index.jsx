@@ -124,7 +124,7 @@ export default class App extends Component {
 					[
 						{
 							text: 'Ok',
-							onPress: () => console.log('Ok Pressed')
+							onPress: () => {this.props.navigation.navigate('Home_screen', { post : true })} //pass to home screen
 						}
 					],
 					{cancelable: false}
@@ -132,7 +132,7 @@ export default class App extends Component {
 			} else {
 				Alert.alert(
 					'Error !',
-					`Invalid QR code scanned for the course ${courseId} !. Please scan again.`,
+					`Invalid QR code scanned for the course ${courseId}. Please scan again !`,
 					[
 						{
 							text: 'Ok',

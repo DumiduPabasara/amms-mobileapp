@@ -1,4 +1,6 @@
 import moment from 'moment';
+import axios from 'axios';
+import { baseUrl } from '../../api';
 
 
 export const getDayAndTime = () => {
@@ -25,3 +27,24 @@ export const isActive = schedule => {
 
 
   };
+
+  //isMarked is always return boolean in this method
+  export const isMarked = async (student, course) => {
+		try {
+			const { data } = await axios.get(
+				`${baseUrl}/api/attendance/${student}/${course}`
+			);
+      
+      if(data) {
+        return true;
+      }
+
+      else {
+        return false;
+      }
+
+		} catch (err) {
+			console.error(err.message);
+			return false;
+		}
+	};

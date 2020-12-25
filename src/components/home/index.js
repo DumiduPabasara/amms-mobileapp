@@ -16,7 +16,9 @@ const wait = (timeout) => {
   });
 }
 
-const HomeScreen = ( {navigation} ) => {
+const HomeScreen = ( {navigation, route} ) => {
+
+  //route takes from qrScreen as post to set to courses
 
   const user = useSelector(getLoggedInUserDetails);
 
@@ -46,7 +48,8 @@ const HomeScreen = ( {navigation} ) => {
           </Card>
         </Animatable.View>
         <Animatable.View animation="zoomInUp" duration={ 1500 } delay={ 900 }>
-          <Courses navigation={ navigation } user={ user }/>
+          {console.log(route.params?.post)}
+          <Courses navigation={ navigation } user={ user } markedQ={route.params?.post}/>
         </Animatable.View>
       </ScrollView>
     </LinearGradient>

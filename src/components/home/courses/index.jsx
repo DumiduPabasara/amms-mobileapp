@@ -6,10 +6,10 @@ import TouchableScale from 'react-native-touchable-scale';
 import Loading from '../../loading';
 import moment from 'moment';
 import { baseUrl } from '../../../api';
-import { isActive, getDayAndTime } from '../../common/scripts';
+import { isActive, getDayAndTime, isMarked } from '../../common/scripts';
 
 class Courses extends Component {
-  state = { courses: [], loading: true };
+  state = { courses: [], loading: true, };
 
   async componentDidMount() {
     const { courses: userCourses } = this.props.user;
@@ -22,8 +22,9 @@ class Courses extends Component {
             `${baseUrl}/api/courses/${userCourses[i]}`
           );
           courses.push(data);
+
         }
-      this.setState({ courses, loading: false });
+      this.setState({ courses, loading: false, marked: false });
     } catch (err) {
       console.log(err.message);
     }
@@ -45,7 +46,7 @@ class Courses extends Component {
 
   render() {
 
-    const { courses, loading } = this.state;
+    const { courses, loading, marked } = this.state;
 
     console.log(getDayAndTime());
   
@@ -73,8 +74,7 @@ class Courses extends Component {
     }
 
     /*console.log(sortedBasedOnActive(courses));*/
-
-    const marked = false;
+    console.log(this.props.markedQ);
 
     return loading ? (
     
@@ -102,7 +102,7 @@ class Courses extends Component {
                   start: { x: 1, y: 0 },
                   end: { x: 0.2, y: 0 },
                 }}
-                onPress={ isActive(l.schedule) ? ( marked ? () => Alert.alert('Attendance is already marked for this course' ) : () => { this.props.navigation.navigate('QRScanner_screen', { courseCode: l.code, id: this.props.user.id }) }) : () => Alert.alert('Course not available at the moment' ) }
+                onPress={ isActive(l.schedule) ? ( this.props.markedQ ? () => Alert.alert('Attendance is already marked for this course' ) : () => { this.props.navigation.navigate('QRScanner_screen', { courseCode: l.code, id: this.props.user.id }) }) : () => Alert.alert('Course not available at the moment' ) }
               >
                 <Avatar size={50} containerStyle={{ alignItems:'center'}}>
                 {isActive(l.schedule) ? <Text style={styles.timeStyle}>now{"\n"}{"\n"}{moment(l.schedule.startTime, 'h').format('h a')} - {moment(l.schedule.startTime+l.schedule.duration, 'h').format('h a')}{"\n"}{"\n"}{this.chooseDay(l.schedule.day)}</Text> : <Text style={styles.timeStyleD}>{this.chooseDay(l.schedule.day)}</Text>}
