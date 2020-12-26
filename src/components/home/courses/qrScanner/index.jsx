@@ -8,6 +8,7 @@ import {
 	Alert,
 	Button
 } from 'react-native';
+import { Icon } from 'react-native-elements';
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -118,13 +119,7 @@ export default class App extends Component {
 					[
 						{
 							text: 'Ok',
-<<<<<<< HEAD
-							onPress: () => {this.props.navigation.navigate('Home_screen', { post :"done" })} //pass to home screen
-=======
-							onPress: () => {
-								this.props.navigation.navigate('Home_screen', { post: true });
-							} //pass to home screen
->>>>>>> ca03b60ce3e1ebd16c8b5b49e75abd9f520c609f
+							onPress: () => {this.props.navigation.navigate('Home_screen', { post :"done" })} //pass to home screen							
 						}
 					],
 					{ cancelable: false }
@@ -219,8 +214,39 @@ export default class App extends Component {
 
 	render() {
 		const { marked } = this.state;
+		const code = this.props.route.params.courseCode;
 
-		return !marked ? this.renderQrScanner() : <Text>False</Text>;
+		return !marked ? this.renderQrScanner() : 
+
+		(
+			<LinearGradient
+				colors={['#e0ffff', '#63a8e6']}
+				start={[0.1, 0.1]}
+				style={styles.mainBody}	
+		 	>
+				<View
+					style={{
+						justifyContent: 'center',
+						alignItems: 'center'
+					}}
+				>
+					<Icon
+						name='calendar-check'
+						type='font-awesome-5'
+						color='green'
+						size={300}
+						containerStyle={{ marginTop: 30, marginBottom: 15}}
+					/>
+					<Text style={styles.textQ}>Your Attendance is Successfully Marked for the course {code}</Text>
+					<Button
+						title='Go To the Attendance Report'
+						onPress={ () => {this.props.navigation.navigate('Home_screen', { screen : 'AR_screen'})}}
+					/>
+				</View>
+			</LinearGradient>
+		);
+		
+
 		// this.props.navigation.navigate('Home_screen', { post: true });
 
 		// !marked ? (
@@ -248,5 +274,16 @@ const styles = StyleSheet.create({
 	mainBody: {
 		flex: 1,
 		alignContent: 'center'
+	},
+	textQ:{
+		fontWeight:'900', 
+		textAlign:'center', 
+		fontSize: 26.5, 
+		textAlignVertical:'auto', 
+		alignSelf:'baseline', 
+		textDecorationColor:'green', 
+		flexWrap:'wrap', 
+		fontFamily:'sans-serif-light',
+		marginBottom: 15
 	}
 });

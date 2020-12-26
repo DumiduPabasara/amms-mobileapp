@@ -50,11 +50,12 @@ class Courses extends Component {
 
 	render() {
 		const { courses, loading, marked } = this.state;
+    const { day } = getDayAndTime();
 
 		console.log(getDayAndTime());
 
 		const sortedBasedOnActive = courses => {
-			const { day } = getDayAndTime();
+			//const { day } = getDayAndTime();
 
 			let coursesTodayA = [];
 			let coursesOtherA = [];
@@ -125,12 +126,12 @@ class Courses extends Component {
 											  }
 										: () => Alert.alert('Course not available at the moment')
 								}>
-								<Avatar size={50} containerStyle={{ alignItems: 'center' }}>
+								<Avatar size={52} containerStyle={{ alignItems: 'center' }}>
 									{isActive(l.schedule) ? (
 										<Text style={styles.timeStyle}>
 											now{'\n'}
 											{'\n'}
-											{moment(l.schedule.startTime, 'h').format('h a')} -{' '}
+											{moment(l.schedule.startTime, 'h').format('h a')}{'\n'}to{'\n'}
 											{moment(
 												l.schedule.startTime + l.schedule.duration,
 												'h'
@@ -153,8 +154,7 @@ class Courses extends Component {
 									</ListItem.Subtitle>
 									{isActive(l.schedule) ? (
 										<ListItem.Subtitle>
-											Today's Lecture : Introduction to the Programming
-											Languages
+											Today's Lecture : {l.dates.map(k => ( k.date === day ? k.lecture : null))}
 										</ListItem.Subtitle>
 									) : null}
 								</ListItem.Content>
@@ -188,10 +188,14 @@ const styles = StyleSheet.create({
 		backgroundColor: 'red'
 	},
 	timeStyle: {
-		fontSize: 10,
+		fontSize: 12,
 		color: '#e0ffff',
 		textAlign: 'center',
-		justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems:'center',
+    alignSelf:'center',
+    marginBottom: 30,
+    marginTop: -20 
 	},
 	timeStyleN: {
 		fontSize: 12,
