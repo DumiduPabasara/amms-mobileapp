@@ -124,7 +124,7 @@ export default class App extends Component {
 					[
 						{
 							text: 'Ok',
-							onPress: () => {this.props.navigation.navigate('Home_screen', { post : true })} //pass to home screen
+							onPress: () => {this.props.navigation.navigate('Home_screen', { post :"done" })} //pass to home screen
 						}
 					],
 					{cancelable: false}

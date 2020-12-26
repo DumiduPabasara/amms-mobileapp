@@ -62,6 +62,7 @@ const Tabber = () => (
 export const HomeStack = () => (
     <Stack.Navigator
         initialRouteName="Home_screen"
+        mode="modal"
     >
         <Stack.Screen  
             options={

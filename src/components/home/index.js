@@ -19,6 +19,12 @@ const wait = (timeout) => {
 const HomeScreen = ( {navigation, route} ) => {
 
   //route takes from qrScreen as post to set to courses
+  React.useEffect(() => {
+    if (route.params?.post) {
+      // Post updated, do something with `route.params.post`
+      // For example, send the post to the server
+    }
+  }, [route.params?.post]);
 
   const user = useSelector(getLoggedInUserDetails);
 
