@@ -154,7 +154,7 @@ class Courses extends Component {
 									</ListItem.Subtitle>
 									{isActive(l.schedule) ? (
 										<ListItem.Subtitle>
-											Today's Lecture : {l.dates.map(k => ( k.date === day ? k.lecture : null))}
+											Today's Lecture : Introduction{/*l.dates.map(k => ( k.date === day ? k.lecture : null))*/}
 										</ListItem.Subtitle>
 									) : null}
 								</ListItem.Content>
@@ -194,8 +194,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems:'center',
     alignSelf:'center',
-    marginBottom: 30,
-    marginTop: -20 
+    marginBottom: 35,
+    marginTop: -29 
 	},
 	timeStyleN: {
 		fontSize: 12,

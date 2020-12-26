@@ -96,20 +96,21 @@ export default class App extends Component {
 	renderQrScanner = () => {
 		const { CameraPermissionGranted, scanned, loading, password } = this.state;
 		const { courseCode } = this.props.route.params;
-		const courseId = courseCode.toString();
+		const courseId = courseCode.toString().trim();
 
 		const barCodeScanned = ({ data }) => {
 			//Access the Data
 			this.setState({ scanned: true });
 
 			/*let scannedData = data;
-      console.log(scannedData);*/
+      		console.log(scannedData);*/
 
-			let scannedCourseId = data.slice(0, 7);
+			let scannedCourseId = data.slice(0, 7).trim();
 
-			/*console.log(scannedCourseId);*/
+			console.log(data);
 
-			/*console.log(scannedCourseId.includes(courseId));*/
+			console.log(scannedCourseId.includes(courseId));
+			console.log(data === password);
 
 			if (scannedCourseId.includes(courseId) && data === password) {
 				this.markAttendance(data);
@@ -240,7 +241,7 @@ export default class App extends Component {
 					<Text style={styles.textQ}>Your Attendance is Successfully Marked for the course {code}</Text>
 					<Button
 						title='Go To the Attendance Report'
-						onPress={ () => {this.props.navigation.navigate('Home_screen', { screen : 'AR_screen'})}}
+						onPress={ () => {this.props.navigation.navigate('Home_screen', { screen : 'AMMS-FOS'}) , this.props.navigation.navigate('AMMS_FOS', { screen : 'AR_screen'})}}
 					/>
 				</View>
 			</LinearGradient>
@@ -252,7 +253,6 @@ export default class App extends Component {
 		// !marked ? (
 		// 	renderQrScanner()
 		// ) : (
-		// 	<View>Attendance is already marked for this course</View>
 		// );
 
 		// !marked && renderQrScanner();
