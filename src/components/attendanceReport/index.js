@@ -96,7 +96,7 @@ class ARScreen extends PureComponent {
                                     start: { x: 1, y: 0 },
                                     end: { x: 0.2, y: 0 },
                                 }}
-                                onPress = {() => this.props.navigation.navigate('DetailedReport_Screen', { courseCode: l.code } )}
+                                onPress = {() => this.props.navigation.navigate('DetailedReport_Screen', { courseCode: l.code, userId: this.props.user.id } )}
                             >
 
                                 {/*<Text style={{ fontSize: 20}} >{l.eligible}%</Text>*/}

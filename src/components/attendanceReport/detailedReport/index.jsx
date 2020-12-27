@@ -1,21 +1,71 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, Text, Button, StyleSheet, Alert } from 'react-native';
 import { ListItem, Avatar, Card } from 'react-native-elements';
 import { LinearGradient } from "expo-linear-gradient";
 import { View } from 'react-native-animatable';
+import { isMarked } from '../../common/scripts';
+import moment from 'moment';
+import axios from 'axios';
+import { baseUrl } from '../../../api';
 
 export default function DetailedReport( {navigation, route}) {
 
-    const { courseCode } = route.params;
+    const { courseCode, userId } = route.params;
     const courseId = courseCode.toString();
+
+    const [attendanceData, setAttendnceData] = useState([]);
 
     useEffect (() => {
         
-        navigation.setOptions({ title: `Detailed Report for ${courseId}` })
+        navigation.setOptions({ title: `Detailed Report for ${courseId}` });
 
-    }, []);
+        const fetchCourseData = async () => {
 
-    const lectures = [
+            try {
+
+                const { data } = await axios.get(`${baseUrl}/api/courses/${courseCode}`);
+
+                const course = {
+                    id: data._id,
+                };
+
+                fetchAttendanceData(course);
+
+            } catch (err) {
+                console.error(err.message);
+                return false;
+            }
+
+        };
+
+        const fetchAttendanceData = async (course) => {
+
+            const attendance = [];
+            try {
+
+                const { data } = await axios.get(
+                    `${baseUrl}/api/attendance/${userId}/${course.id}`
+                );
+
+                attendance.push(data);
+                
+                //console.log(data);
+                setAttendnceData(...attendanceData, attendance);
+                
+            } catch (err) {
+                console.error(err.message);
+                return false;
+            }
+        }
+
+        console.log(fetchCourseData());
+        fetchCourseData();                  
+
+    }, [courseCode,userId]);
+
+    
+
+    /*const lectures = [
     
         {
             name: 'Lecture 1',
@@ -33,23 +83,33 @@ export default function DetailedReport( {navigation, route}) {
             marked: true
         },
         
-    ]
+    ]*/
 
+    const chooseDay = (day) => {
+       return moment(day, 'YYYY:MM:DD HH:mm:ss').format('MMM Do')
+    }
+
+    const chooseTime = (time) => {
+       return moment(time, 'YYYY:MM:DD HH:mm:ss').format('h:mm a')
+    }
 
     return (
+    
         <LinearGradient
             colors={["#e0ffff", "#63a8e6"]}
             start={[0.1, 0.1]}
             style={styles.mainBody}
         >
-            <ScrollView>
-            {
-                    lectures.map((l) => (
+            <View>{console.log(attendanceData)}</View>
+            { attendanceData ?
+                <ScrollView>
+                {
+                    attendanceData.map((l) => (
                         <ListItem
-                            key={l.name}
+                            key={l._id}
                             bottomDivider
                             linearGradientProps={{
-                                colors: l.marked ? ['#adff2f','#32cd32'] : ['#f08080','#dc143c'],
+                                colors: isMarked(l.student, l.course) ? ['#adff2f','#32cd32'] : ['#f08080','#dc143c'],
                                 start: { x: 1, y: 0 },
                                 end: { x: 0.2, y: 0 },
                             }}
@@ -58,20 +118,29 @@ export default function DetailedReport( {navigation, route}) {
                             
                             <ListItem.Content >
                                 <ListItem.Title style={{ color: '#faf0e6', fontWeight: 'bold' }}>
-                                    { l.name }
+                                    Lecture 1
                                 </ListItem.Title>
                                 <ListItem.Subtitle style={{ color: '#ffffe0', flex:1, flexDirection:'row' }}>
-                                    { l.subtitle }  
+                                    Introduction 
                                 </ListItem.Subtitle>  
                             </ListItem.Content>
                             <View>
-                                <Text style={styles.timeStyle}>{l.time}</Text>
-                                <Text style={styles.timeStyle}>{l.day}</Text>
+                                <Text style={styles.timeStyle}>{chooseDay(l.timestamp)}</Text>
+                                <Text style={styles.timeStyle}>{chooseTime(l.timestamp)}</Text>
                             </View>
                         </ListItem>
                     ))
                 }
-            </ScrollView>
+                </ScrollView>
+            
+            :
+
+                <View>
+                    <Text>No Records Available Yet !</Text>
+                </View>
+            
+            }
+            
         </LinearGradient>
     )
 }
