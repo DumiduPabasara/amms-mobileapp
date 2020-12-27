@@ -214,10 +214,30 @@ export default class App extends Component {
 	};
 
 	render() {
-		const { marked } = this.state;
+		const { marked, password } = this.state;
 		const code = this.props.route.params.courseCode;
 
-		return !marked ? this.renderQrScanner() : 
+		return !marked ? !password ? (
+
+			<LinearGradient
+				colors={['#e0ffff', '#63a8e6']}
+				start={[0.1, 0.1]}
+				style={styles.mainBody}	
+		 	>
+				<View
+					style={{
+						justifyContent: 'center',
+						alignItems: 'center'
+					}}
+				>
+					<Text>Please Wait Until Lecturer to generate QR code !</Text>
+					<Loading />
+				</View>
+			</LinearGradient>
+
+		)
+		
+		: this.renderQrScanner() : 
 
 		(
 			<LinearGradient

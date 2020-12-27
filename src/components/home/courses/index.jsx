@@ -115,14 +115,14 @@ class Courses extends Component {
 									isActive(l.schedule) ? 
 										this.props.markedQ
 											? () =>
-													Alert.alert(
-														'Attendance is already marked for this course'
-													)
-											: !(l.password)? () => Alert.alert('Please wait for lecturer to generate the QR code !') : () => {
-													this.props.navigation.navigate('QRScanner_screen', {
-														courseCode: l.code,
-														id: this.props.user.id
-													});
+												Alert.alert(
+													'Attendance is already marked for this course'
+												)
+											: () => {
+												this.props.navigation.navigate('QRScanner_screen', {
+													courseCode: l.code,
+													id: this.props.user.id
+												});
 											  }
 										: () => Alert.alert('Course not available at the moment')
 								}>
