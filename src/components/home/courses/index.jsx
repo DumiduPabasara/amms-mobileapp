@@ -112,13 +112,13 @@ class Courses extends Component {
 									end: { x: 0.2, y: 0 }
 								}}
 								onPress={
-									isActive(l.schedule)
-										? this.props.markedQ
+									isActive(l.schedule) ? 
+										this.props.markedQ
 											? () =>
 													Alert.alert(
 														'Attendance is already marked for this course'
 													)
-											: () => {
+											: !(l.password)? () => Alert.alert('Please wait for lecturer to generate the QR code !') : () => {
 													this.props.navigation.navigate('QRScanner_screen', {
 														courseCode: l.code,
 														id: this.props.user.id
@@ -152,9 +152,9 @@ class Courses extends Component {
 										style={isActive(l.schedule) ? styles.activeFontSize : null}>
 										{l.name}
 									</ListItem.Subtitle>
-									{isActive(l.schedule) ? (
+									{isActive(l.schedule) && l.password ? (
 										<ListItem.Subtitle>
-											Today's Lecture : Introduction{/*l.dates.map(k => ( k.date === day ? k.lecture : null))*/}
+											Today's Lecture : {l.dates.map(k => k.lecture)}
 										</ListItem.Subtitle>
 									) : null}
 								</ListItem.Content>
