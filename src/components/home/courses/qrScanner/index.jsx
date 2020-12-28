@@ -9,6 +9,7 @@ import {
 	Button
 } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { CommonActions } from '@react-navigation/native';
 import * as Permissions from 'expo-permissions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -41,7 +42,9 @@ export default class App extends Component {
 
 		//Getting courses from db
 		try {
+
 			const code = this.props.route.params.courseCode;
+
 			const { data } = await axios.get(`${baseUrl}/api/courses/${code}`);
 
 			const course = {
@@ -78,6 +81,7 @@ export default class App extends Component {
 	};
 
 	markAttendance = async password => {
+
 		if (password === this.state.password && !this.state.marked) {
 			const obj = {
 				student: this.props.route.params.id,
@@ -230,7 +234,11 @@ export default class App extends Component {
 						alignItems: 'center'
 					}}
 				>
-					<Text>Please Wait Until Lecturer to generate QR code !</Text>
+					<Image
+						source={require('../../../../../images/sonic.gif')}
+						style={styles.imgIcon} 
+					/>
+					<Text style={styles.textQ}>Please Wait Until Lecturer to generate QR code !</Text>
 					<Loading />
 				</View>
 			</LinearGradient>
@@ -260,22 +268,13 @@ export default class App extends Component {
 					/>
 					<Text style={styles.textQ}>Your Attendance is Successfully Marked for the course {code}</Text>
 					<Button
-						title='Go To the Attendance Report'
-						onPress={ () => {this.props.navigation.navigate('Home_screen', { screen : 'AMMS-FOS'}) , this.props.navigation.navigate('AMMS_FOS', { screen : 'AR_screen'})}}
+						title='Go To the Home'
+						onPress={ () => {this.props.navigation.goBack()} }
 					/>
 				</View>
 			</LinearGradient>
 		);
 		
-
-		// this.props.navigation.navigate('Home_screen', { post: true });
-
-		// !marked ? (
-		// 	renderQrScanner()
-		// ) : (
-		// );
-
-		// !marked && renderQrScanner();
 	}
 }
 
@@ -305,5 +304,13 @@ const styles = StyleSheet.create({
 		flexWrap:'wrap', 
 		fontFamily:'sans-serif-light',
 		marginBottom: 15
+	},
+	imgIcon: {
+		width: 220,
+		height: 300,
+		marginVertical: 20,
+		marginRight: 10,
+		justifyContent: 'center',
+		alignContent: 'center',
 	}
 });

@@ -16,7 +16,7 @@ import { baseUrl } from '../../../api';
 import { isActive, getDayAndTime, isMarked } from '../../common/scripts';
 
 class Courses extends Component {
-	state = { courses: [], loading: true };
+	state = { courses: [], loading: true, gotPass: false };
 
 	async componentDidMount() {
 		const { courses: userCourses } = this.props.user;
@@ -44,13 +44,20 @@ class Courses extends Component {
     window.location.reload();
   }, 1000);*/
 
+  	isPassCreated = pass => {
+		  if(pass) {
+			this.setState( {gotPass: true});
+			
+		  }
+	};
+
 	chooseDay = varDay => {
 		return moment(varDay, 'day').format('ddd');
 	};
 
 	render() {
-		const { courses, loading, marked } = this.state;
-    const { day } = getDayAndTime();
+		const { courses, loading, gotPass } = this.state;
+    	const { day } = getDayAndTime();
 
 		console.log(getDayAndTime());
 
@@ -152,7 +159,8 @@ class Courses extends Component {
 										style={isActive(l.schedule) ? styles.activeFontSize : null}>
 										{l.name}
 									</ListItem.Subtitle>
-									{isActive(l.schedule) && l.password ? (
+									{this.isPassCreated(l.password) }
+									{isActive(l.schedule) && gotPass ? (
 										<ListItem.Subtitle>
 											Today's Lecture : {l.dates.map(k => k.lecture)}
 										</ListItem.Subtitle>
