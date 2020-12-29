@@ -3,7 +3,6 @@ import { ScrollView, Text, Button, StyleSheet, Alert } from 'react-native';
 import { ListItem, Avatar, Card } from 'react-native-elements';
 import { LinearGradient } from "expo-linear-gradient";
 import { View } from 'react-native-animatable';
-import { isMarked } from '../../common/scripts';
 import moment from 'moment';
 import axios from 'axios';
 import { baseUrl } from '../../../api';
@@ -13,8 +12,9 @@ export default function DetailedReport( {navigation, route}) {
     const { courseCode, userId } = route.params;
     const courseId = courseCode.toString();
 
-    const [attendanceData, setAttendnceData] = useState([]);
-    const [courseData, setCourseData] = useState('');
+    const [presentData, setPresentData] = useState([]);
+    const [courseData, setCourseData] = useState({});
+    const [isTrue, setTrue] = useState(false);
 
     useEffect (() => {
         
@@ -28,6 +28,7 @@ export default function DetailedReport( {navigation, route}) {
 
                 const course = {
                     id: data._id,
+                    dates: data.dates
                 };
 
                 setCourseData(data);
@@ -43,17 +44,20 @@ export default function DetailedReport( {navigation, route}) {
 
         const fetchAttendanceData = async (course) => {
 
-            const attendance = [];
             try {
 
-                const { data } = await axios.get(
+                const { data : attendance } = await axios.post(
                     `${baseUrl}/api/attendance/${userId}/${course.id}`
                 );
-
-                attendance.push(data);
                 
-                //console.log(data);
-                setAttendnceData(...attendanceData, attendance);
+                const presentDates =
+				attendance && attendance.length > 0
+					? attendance.map(d =>
+							moment(d.timestamp, 'YYYY:MM:DD HH:mm:ss').format('YYYY:MM:DD')
+					  )
+                    : [];
+                    
+                setPresentData(presentDates);
                 
             } catch (err) {
                 console.error(err.message);
@@ -61,32 +65,17 @@ export default function DetailedReport( {navigation, route}) {
             }
         }
 
-        console.log(fetchCourseData());
         fetchCourseData();                  
 
-    }, [courseCode,userId]);
+    }, []);
 
-    
+    const getDate = date => {
+        return moment(date, 'YYYY:MM:DD HH:mm:ss').format('YYYY:MM:DD');
+    };    
 
-    /*const lectures = [
-    
-        {
-            name: 'Lecture 1',
-            subtitle: 'Introduction to Programming Languages',
-            time:'10.00',
-            day: 'Nov 22',
-            marked: false
-        },
-
-        {
-            name: 'Lecture 2',
-            subtitle: 'OOP in php',
-            time:'10.02',
-            day: 'Nov 30',
-            marked: true
-        },
-        
-    ]*/
+    const isPresent = (date, presentDates) => {
+        return presentDates.includes(getDate(date));
+    };
 
     const chooseDay = (day) => {
        return moment(day, 'YYYY:MM:DD HH:mm:ss').format('MMM Do')
@@ -96,56 +85,67 @@ export default function DetailedReport( {navigation, route}) {
        return moment(time, 'YYYY:MM:DD HH:mm:ss').format('h:mm a')
     }
 
-    return (
+    const { dates: records } = courseData ;
+
+    if(records) {
+
+        return (
     
-        <LinearGradient
-            colors={["#e0ffff", "#63a8e6"]}
-            start={[0.1, 0.1]}
-            style={styles.mainBody}
-        >
-            <View>{console.log(attendanceData)}</View>
-            { attendanceData && courseData ?
+            <LinearGradient
+                colors={["#e0ffff", "#63a8e6"]}
+                start={[0.1, 0.1]}
+                style={styles.mainBody}
+            >
                 <ScrollView>
                 {
-                    courseData.map((l, index) => (
+                    records.map((l, index) => (
                         <ListItem
                             key={l._id}
                             bottomDivider
                             linearGradientProps={{
-                                colors: isMarked(l.student, l.course) ? ['#adff2f','#32cd32'] : ['#f08080','#dc143c'],
+                                colors: isPresent(l.date, presentData) ? ['#adff2f','#32cd32'] : ['#f08080','#dc143c'],
                                 start: { x: 1, y: 0 },
                                 end: { x: 0.2, y: 0 },
                             }}
                             //onPress = {() => this.props.navigation.navigate('DetailedReport_Screen', { courseCode: l.code } )}
                         >
-                            
                             <ListItem.Content >
                                 <ListItem.Title style={{ color: '#faf0e6', fontWeight: 'bold' }}>
-                                    Lecture 1
+                                    Lecture {index+1}
                                 </ListItem.Title>
                                 <ListItem.Subtitle style={{ color: '#ffffe0', flex:1, flexDirection:'row' }}>
-                                    Introduction 
+                                    {l.lecture}
                                 </ListItem.Subtitle>  
                             </ListItem.Content>
                             <View>
-                                <Text style={styles.timeStyle}>{chooseDay(l.timestamp)}</Text>
-                                <Text style={styles.timeStyle}>{chooseTime(l.timestamp)}</Text>
+                                <Text style={styles.timeStyle}>{chooseDay(l.date)}</Text>
+                                <Text style={styles.timeStyle}>{chooseTime(l.date)}</Text>
                             </View>
                         </ListItem>
                     ))
                 }
-                </ScrollView>
-            
-            :
+                <Text style={styles.textQ}>Exisiting Records will Display Here !</Text>
+                </ScrollView>  
+            </LinearGradient>
+        )
 
-                <View>
-                    <Text>No Records Available Yet !</Text>
-                </View>
-            
-            }
-            
-        </LinearGradient>
-    )
+    }
+
+    else {
+
+        return (
+            <View 
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}
+            >
+                <Text style={styles.textQ}>No Records Available Yet !</Text>
+            </View>
+        )
+    }
+
+    
 }
 
 const styles = StyleSheet.create({
@@ -159,6 +159,17 @@ const styles = StyleSheet.create({
         color: '#005e5e',
         textAlign: 'center',
         justifyContent: 'center'
-      },
+    },
+    textQ:{
+		fontWeight:'900', 
+		textAlign:'center', 
+		fontSize: 26.5, 
+		textAlignVertical:'auto', 
+		alignSelf:'baseline', 
+		textDecorationColor:'green', 
+		flexWrap:'wrap', 
+		fontFamily:'sans-serif-light',
+		marginBottom: 15
+	},
   
   });

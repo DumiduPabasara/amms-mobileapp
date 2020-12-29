@@ -13,7 +13,7 @@ import TouchableScale from 'react-native-touchable-scale';
 import Loading from '../../loading';
 import moment from 'moment';
 import { baseUrl } from '../../../api';
-import { isActive, getDayAndTime, isMarked } from '../../common/scripts';
+import { isActive, getDayAndTime } from '../../common/scripts';
 
 class Courses extends Component {
 	state = { courses: [], loading: true };
