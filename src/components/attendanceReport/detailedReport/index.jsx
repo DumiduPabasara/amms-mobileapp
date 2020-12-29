@@ -14,6 +14,7 @@ export default function DetailedReport( {navigation, route}) {
     const courseId = courseCode.toString();
 
     const [attendanceData, setAttendnceData] = useState([]);
+    const [courseData, setCourseData] = useState('');
 
     useEffect (() => {
         
@@ -28,6 +29,8 @@ export default function DetailedReport( {navigation, route}) {
                 const course = {
                     id: data._id,
                 };
+
+                setCourseData(data);
 
                 fetchAttendanceData(course);
 
@@ -101,10 +104,10 @@ export default function DetailedReport( {navigation, route}) {
             style={styles.mainBody}
         >
             <View>{console.log(attendanceData)}</View>
-            { attendanceData ?
+            { attendanceData && courseData ?
                 <ScrollView>
                 {
-                    attendanceData.map((l) => (
+                    courseData.map((l, index) => (
                         <ListItem
                             key={l._id}
                             bottomDivider

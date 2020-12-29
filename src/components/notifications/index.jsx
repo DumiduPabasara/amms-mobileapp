@@ -1,11 +1,10 @@
-import React from 'react';
-import RenderNotification from './renderNotification';
+import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, Modal, Alert, FlatList } from 'react-native';
 import { Card, Badge } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-class NotificationScreen extends RenderNotification {
+class NotificationScreen extends Component {
 
     state = {
         absentLecCount : 1,
@@ -23,6 +22,26 @@ class NotificationScreen extends RenderNotification {
     render() {
 
         const { absentLecCount, lecUpdatesCount, meetingCount, submittedExcusStateCount, modalVisible, componentType } = this.state;
+
+        const lectures = [
+    
+            {
+                name: 'Lecture 1',
+                subtitle: 'Introduction to Programming Languages',
+                time:'10.00',
+                day: 'Nov 22',
+                marked: false
+            },
+    
+            {
+                name: 'Lecture 2',
+                subtitle: 'OOP in php',
+                time:'10.02',
+                day: 'Nov 30',
+                marked: true
+            },
+            
+        ]
 
         return(
             <LinearGradient
@@ -63,11 +82,22 @@ class NotificationScreen extends RenderNotification {
                             this.setModalVisible(false);
                         }}
                     >
-                        <View style={styles.modal}>
-                            <FlatList
-                                data={this.lectures}
-                                renderItem={this.renderAbsentList}
-                                keyExtractor={lecture => lecture.name}
+                        <View style={styles.containerflat}>
+                            <FlatList 
+                                style={styles.notificationList} 
+                                enableEmptySections={true}
+                                data={lectures}
+                                keyExtractor= {(item) => {
+                                    return item.name;
+                                }}
+                                renderItem={({item}) => {
+                                    return (
+                                        <View style={styles.notificationBox}>
+                                            <Text style={styles.description}>{item.name}</Text>
+                                            <Text style={styles.description}>{item.subtitle}</Text>
+                                        </View>
+                                    )
+                                }}
                             />
                         </View>
                     </Modal>
@@ -118,7 +148,27 @@ const styles = StyleSheet.create({
     modal: {
         justifyContent: 'center',
         margin: 20
-      },
+    },
+    containerflat:{
+        backgroundColor:'#DCDCDC'
+    },
+    notificationList:{
+        marginTop:20,
+        padding:10,
+    },
+    notificationBox: {
+        padding:20,
+        marginTop:5,
+        marginBottom:5,
+        backgroundColor: '#FFFFFF',
+        flexDirection: 'row',
+        borderRadius:10,
+    },
+    description:{
+        fontSize:18,
+        color: "#3498db",
+        marginLeft:10,
+    },
   
 });
 
