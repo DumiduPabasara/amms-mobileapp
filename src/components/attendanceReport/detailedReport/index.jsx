@@ -75,6 +75,9 @@ export default function DetailedReport( {navigation, route}) {
 
     const isPresent = (date, presentDates) => {
         return presentDates.includes(getDate(date));
+        //bug in frontend: color will misbehave if course have more than 2 lectures on same day
+        //sol: check the time difference according to the backend timeout method (current 5 min)
+    
     };
 
     const chooseDay = (day) => {
@@ -110,10 +113,10 @@ export default function DetailedReport( {navigation, route}) {
                             //onPress = {() => this.props.navigation.navigate('DetailedReport_Screen', { courseCode: l.code } )}
                         >
                             <ListItem.Content >
-                                <ListItem.Title style={{ color: '#faf0e6', fontWeight: 'bold' }}>
+                                <ListItem.Title style={styles.textN}>
                                     Lecture {index+1}
                                 </ListItem.Title>
-                                <ListItem.Subtitle style={{ color: '#ffffe0', flex:1, flexDirection:'row' }}>
+                                <ListItem.Subtitle style={styles.textS}>
                                     {l.lecture}
                                 </ListItem.Subtitle>  
                             </ListItem.Content>
@@ -171,6 +174,18 @@ const styles = StyleSheet.create({
 		fontFamily:'sans-serif-light',
         marginBottom: 15,
         marginTop: 30
-	},
+    },
+    textN: {
+        color: '#faf0e6', 
+        fontWeight: 'bold',
+        fontSize: 20
+    },
+    textS: {
+        color: '#ffffe0', 
+        flex:1, 
+        flexDirection:'row',
+        fontSize: 15,
+        flexGrow: 5
+    }
   
   });
