@@ -33,8 +33,6 @@ class ARScreen extends PureComponent {
       console.log(err.message);
     }
 
-
-
   }
 
   getPresentDates = async (courseId) => {
@@ -54,17 +52,24 @@ class ARScreen extends PureComponent {
 
   renderAverage = (present, total) => total <= 0 ? 0 : (present / total) * 100;
 
+  /*renderAverage = (present, total) => {
+
+    console.log(present, total)
+
+    return (present / total) * 100;
+  }*/
+
   render() {
 
     const { courses, loading } = this.state;
 
-    const choseColor1 = (code) => {
+    const choseColor1 = (average) => {
 
-      if (code == 'CSC2213') {
+      if (average >= 80) {
         return '#adff2f';
       }
 
-      else if (code == 'CSC2233') {
+      else if ( average < 60) {
         return '#f08080';
       }
 
@@ -74,13 +79,13 @@ class ARScreen extends PureComponent {
 
     }
 
-    const choseColor2 = (code) => {
+    const choseColor2 = (average) => {
 
-      if (code == 'CSC2213') {
+      if (average >= 80) {
         return '#32cd32';
       }
 
-      else if (code == 'CSC2233') {
+      else if ( average < 60 ) {
         return '#dc143c';
       }
 
@@ -115,7 +120,7 @@ class ARScreen extends PureComponent {
                       tension={ 100 } // These props are passed to the parent component (here TouchableScale)
                       activeScale={ 0.95 } //
                       linearGradientProps={ {
-                        colors: [choseColor1(l.code), choseColor2(l.code)],
+                        colors: [choseColor1(this.renderAverage((l.presentDates.length), (l.dates.length))), choseColor2(this.renderAverage((l.presentDates.length), (l.dates.length)))],
                         start: { x: 1, y: 0 },
                         end: { x: 0.2, y: 0 },
                       } }
