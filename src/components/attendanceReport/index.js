@@ -3,6 +3,7 @@ import { ScrollView, Text, Button, StyleSheet, Alert } from 'react-native';
 import { ListItem, Card } from 'react-native-elements';
 import axios from 'axios';
 import TouchableScale from 'react-native-touchable-scale';
+import moment from 'moment';
 import { baseUrl } from '../../api';
 import { LinearGradient } from "expo-linear-gradient";
 import * as Animatable from 'react-native-animatable';
@@ -10,26 +11,54 @@ import Loading from '../loading';
 
 class ARScreen extends PureComponent {
 
-    state = { courses: [], loading: true};
+    state = { courses: [], loading: true, };
 
     async componentDidMount() {
         const { courses: userCourses } = this.props.user;
         const courses = [];
 
         try {
-        if (userCourses)
-            for (let i = 0; i < userCourses.length; i++) {
-                const { data } = await axios.get(
-                    `${baseUrl}/api/courses/${userCourses[i]}`
-                );
-                courses.push(data);
-            }
-            this.setState({ courses, loading: false });
+            if (userCourses)
+                for (let i = 0; i < userCourses.length; i++) {
+                    const { data } = await axios.get(
+                        `${baseUrl}/api/courses/${userCourses[i]}`
+                    );
+                    courses.push(data);
+                }
+                        
+                this.setState({ courses, loading: false });
+            
         } catch (err) {
             console.log(err.message);
         }
+
+        
+
     }
 
+    getPresentDates = async (courseId) => {
+        const { data: dates } = await axios.post(
+            `${baseUrl}/api/attendance/${this.props.user.id}/${courseId}`
+        );
+
+        const presentDates =
+            dates && dates.length > 0
+                ? dates.map(d =>
+                        moment(d.timestamp, 'YYYY:MM:DD HH:mm:ss').format('YYYY:MM:DD')
+                  )
+                : [];
+
+        return presentDates;
+    }
+
+    renderAverage = (present, total) => {
+
+        const average = (present / total) * 100;
+        console.log(average.toFixed(0));
+        return average;
+
+        
+    }
     
     render() {
 
@@ -100,7 +129,7 @@ class ARScreen extends PureComponent {
                             >
 
                                 {/*<Text style={{ fontSize: 20}} >{l.eligible}%</Text>*/}
-                                <Text style={{ fontSize: 20}} >80%</Text>
+                                <Text style={{ fontSize: 20}} >{`${this.renderAverage( (this.getPresentDates(l._id).length) , (l.dates.length)).toFixed(0)}%`}</Text>
                                 <ListItem.Content >
                                     <ListItem.Title style={{ color: '#faf0e6', fontWeight: 'bold' }}>
                                         { l.code }
@@ -108,7 +137,7 @@ class ARScreen extends PureComponent {
                                     <ListItem.Subtitle style={{ color: '#ffffe0', flex:1, flexDirection:'row' }}>
                                         { l.name }  
                                     </ListItem.Subtitle>
-                                    
+                                    {console.log(this.getPresentDates(l._id))}
                                 </ListItem.Content>
                                 <ListItem.Chevron color="white" />
                             </ListItem>

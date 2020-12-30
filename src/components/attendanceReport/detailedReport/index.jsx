@@ -169,7 +169,8 @@ const styles = StyleSheet.create({
 		textDecorationColor:'green', 
 		flexWrap:'wrap', 
 		fontFamily:'sans-serif-light',
-		marginBottom: 15
+        marginBottom: 15,
+        marginTop: 30
 	},
   
   });
