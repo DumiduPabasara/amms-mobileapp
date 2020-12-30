@@ -66,11 +66,11 @@ class ARScreen extends PureComponent {
 
         const choseColor1 = (code) => {
 
-            if(code == 'CSC2233') {
+            if(code == 'CSC2213') {
                 return '#adff2f';
             }
 
-            else if(code == 'CSC2263') {
+            else if(code == 'CSC2233') {
                 return '#f08080';
             }
             
@@ -82,11 +82,11 @@ class ARScreen extends PureComponent {
 
         const choseColor2 = (code) => {
 
-            if(code == 'CSC2233') {
+            if(code == 'CSC2213') {
                 return '#32cd32';
             }
 
-            else if(code == 'CSC2263') {
+            else if(code == 'CSC2233') {
                 return '#dc143c';
             }
             
@@ -128,8 +128,8 @@ class ARScreen extends PureComponent {
                                 onPress = {() => this.props.navigation.navigate('DetailedReport_Screen', { courseCode: l.code, userId: this.props.user.id } )}
                             >
 
-                                {/*<Text style={{ fontSize: 20}} >{l.eligible}%</Text>*/}
-                                <Text style={{ fontSize: 20}} >{`${this.renderAverage( (this.getPresentDates(l._id).length) , (l.dates.length)).toFixed(0)}%`}</Text>
+                                {/* l.el ? <Text style={{ fontSize: 20}} >{l.el}%</Text> : <Text style={{ fontSize: 20}} >60%</Text>*/}
+                                {<Text style={{ fontSize: 20}} >{`${this.renderAverage( (this.getPresentDates(l._id).length) , (l.dates.length)).toFixed(0).toString()}%`}</Text>}
                                 <ListItem.Content >
                                     <ListItem.Title style={{ color: '#faf0e6', fontWeight: 'bold' }}>
                                         { l.code }
