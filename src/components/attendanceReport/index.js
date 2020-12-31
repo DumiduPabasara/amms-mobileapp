@@ -8,6 +8,7 @@ import { baseUrl } from '../../api';
 import { LinearGradient } from "expo-linear-gradient";
 import * as Animatable from 'react-native-animatable';
 import Loading from '../loading';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 class ARScreen extends PureComponent {
 
@@ -126,9 +127,19 @@ class ARScreen extends PureComponent {
                       } }
                       onPress={ () => this.props.navigation.navigate('DetailedReport_Screen', { courseCode: l.code, userId: this.props.user.id }) }
                     >
-
-                      {/* l.el ? <Text style={{ fontSize: 20}} >{l.el}%</Text> : <Text style={{ fontSize: 20}} >60%</Text>*/ }
-                      {<Text style={ { fontSize: 20 } } >{ `${this.renderAverage((l.presentDates.length), (l.dates.length)).toFixed(0).toString()}%` }</Text> }
+                      <AnimatedCircularProgress
+                        size={75}
+                        width={3}
+                        fill={this.renderAverage((l.presentDates.length), (l.dates.length)).toFixed(0)}
+                        tintColor="#faf0e6"
+                        backgroundColor="#737373"
+                       >
+                           {
+                            (fill) => (
+                                <Text style={ { fontSize: 20 } } >{ `${this.renderAverage((l.presentDates.length), (l.dates.length)).toFixed(0).toString()}%` }</Text>
+                            )
+                            }
+                      </AnimatedCircularProgress>
                       <ListItem.Content >
                         <ListItem.Title style={ { color: '#faf0e6', fontWeight: 'bold' } }>
                           { l.code }

@@ -74,9 +74,29 @@ export default function DetailedReport( {navigation, route}) {
     };    
 
     const isPresent = (date, presentDates) => {
-        return presentDates.includes(getDate(date));
+        //return presentDates.includes(getDate(date));
         //bug in frontend: color will misbehave if course have more than 2 lectures on same day
         //sol: check the time difference according to the backend timeout method (current 5 min)
+
+        const timeOut = 15;
+
+        for (let i = 0; i < presentDates.length; i++) {
+
+            /*var then  = presentDates[i];
+            var now = date;*/
+
+            var ms = moment(presentDates[i],"YYYY:MM:DD HH:mm:ss").diff(moment(date,"YYYY:MM:DD HH:mm:ss"));
+            var d = moment.duration(ms);
+
+            console.log(d.days() + ':' + d.hours() + ':' + d.minutes() + ':' + d.seconds());
+
+            if( presentDates.includes(getDate(date)) ) {
+                return true;
+            }
+
+        }
+
+        return false;
     
     };
 
