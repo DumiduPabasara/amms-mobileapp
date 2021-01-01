@@ -12,12 +12,13 @@ class NotificationScreen extends Component {
 
     state = {
         absentLecCount : 0,
-        lecUpdatesCount : 2,
+        lecUpdatesCount : 0,
         meetingCount: 0,
         submittedExcusStateCount: 0,
         absentModalVisible: false,
         lectureScheduleModalVisible: false,
-        messages: [], 
+        messages: [],
+        notifications: [], 
         courses: [],
         watchedAbsent: false,
         watchedLecUpdates: false,
@@ -27,9 +28,11 @@ class NotificationScreen extends Component {
 
     async componentDidMount() {
 		try {
-            //absent Lectures
+            
 			await this.renderData();
-			this.loadMessages();
+            this.loadMessages();//absent Lectures
+            this.loadNotifications();// lecture schedule updates
+
 		} catch (err) {
 			console.error(err.message);
 		}
@@ -41,6 +44,39 @@ class NotificationScreen extends Component {
 		const { data } = await axios.get(`${baseUrl}/api/users/${id}`);
 		this.setState({ courses: data.courses });
     };
+
+    /**************************************************************************************************************/
+
+    //Lecture schedule updates
+    loadNotifications = () => {
+		const { courses, notifications } = { ...this.state };
+		let lecUpdatesCount = 0;
+
+		if (courses && courses.length > 0) {
+			courses.forEach(async c => {
+				const { data } = await axios.get(`${baseUrl}/api/courses/${c}`);
+				const course = {
+					id: data._id,
+					code: data.code,
+					name: data.name,
+					schedule: data.schedule
+				};
+
+				// get notifications for the current course
+				const notification = new Notification(course).notify();
+
+				if (notification) {
+					lecUpdatesCount++;
+					notifications.push(notification);
+                }
+                
+                //sorting notification before set state
+                notifications.sort((a, b) => a.time - b.time);
+
+				this.setState({ notifications, lecUpdatesCount });
+			});
+		}
+	};
     
     /**************************************************************************************************************/
 
@@ -126,11 +162,11 @@ class NotificationScreen extends Component {
     //setting modal visibilities
     
     setAbsentModalVisible = (visible) => {
-        this.setState({ absentModalVisible: visible });
+        this.setState({ absentModalVisible: visible, watchedAbsent: true });
     }
 
     setLectureScheduleModalVisible = (visible) => {
-        this.setState({ lectureScheduleModalVisible: visible });
+        this.setState({ lectureScheduleModalVisible: visible, watchedLecUpdates: true });
     }
 
     /**************************************************************************************************************/
@@ -146,49 +182,11 @@ class NotificationScreen extends Component {
             absentModalVisible, 
             lectureScheduleModalVisible,
             messages,
-            watchedAbsent
+            notifications,
+            watchedAbsent,
+            watchedLecUpdates
 
         } = this.state;
-
-        const lectures = [
-    
-            {
-                name: 'Lecture 1',
-                subtitle: 'Introduction to Programming Languages',
-                time:'10.00',
-                day: 'Nov 22',
-                marked: false
-            },
-    
-            {
-                name: 'Lecture 2',
-                subtitle: 'OOP in php',
-                time:'10.02',
-                day: 'Nov 30',
-                marked: true
-            },
-            
-        ]
-
-        const lectures2 = [
-    
-            {
-                name: 'Lecture 3',
-                subtitle: 'Introduction to Programming Languages',
-                time:'10.00',
-                day: 'Nov 22',
-                marked: false
-            },
-    
-            {
-                name: 'Lecture 4',
-                subtitle: 'OOP in php',
-                time:'10.02',
-                day: 'Nov 30',
-                marked: true
-            },
-            
-        ]
 
         return(
             <LinearGradient
@@ -203,7 +201,7 @@ class NotificationScreen extends Component {
                         }}
                     >
                     <Card style={styles.container}>
-                        <Card.FeaturedTitle style={styles.title}>My Absent Lectures { absentLecCount && !watchedAbsent ?<Badge value={absentLecCount} status="error" />: null}</Card.FeaturedTitle>
+                        <Card.FeaturedTitle style={styles.title}>My Absent Lectures { (absentLecCount && !watchedAbsent) ?<Badge value={absentLecCount} status="error" />: null}</Card.FeaturedTitle>
                         <Card.FeaturedSubtitle style={styles.subtitle}>You got {absentLecCount} notifications</Card.FeaturedSubtitle>   
                     </Card>
                     </TouchableOpacity>
@@ -213,7 +211,7 @@ class NotificationScreen extends Component {
                         }}
                     >
                     <Card style={styles.container}>
-                        <Card.FeaturedTitle style={styles.title}>Lecture Schedule Updates { lecUpdatesCount>=1 ?<Badge value={lecUpdatesCount} status="error" />: null}</Card.FeaturedTitle>
+                        <Card.FeaturedTitle style={styles.title}>Lecture Schedule Updates { (lecUpdatesCount>=1 && !watchedLecUpdates) ?<Badge value={lecUpdatesCount} status="error" />: null}</Card.FeaturedTitle>
                         <Card.FeaturedSubtitle style={styles.subtitle}>You got {lecUpdatesCount} notifications</Card.FeaturedSubtitle>   
                     </Card>
                     </TouchableOpacity>
@@ -249,8 +247,8 @@ class NotificationScreen extends Component {
                                         <ListItem>
                                             <View style={styles.notificationBox}>
                                                 <ListItem.Content>
-                                                <Text style={styles.description}>{item.name} ({item.code})</Text>
-                                                <Text style={styles.description}>missed {item.absentDays.length > 1 ? 'lectures' : 'lecture'} on{' '}{this.getAbsentDays(item)}</Text>
+                                                <Text style={styles.descriptionAbsent}>{item.name} ({item.code})</Text>
+                                                <Text style={styles.descriptionAbsent}>missed {item.absentDays.length > 1 ? 'lectures' : 'lecture'} on{' '}{this.getAbsentDays(item)}</Text>
                                                 </ListItem.Content>
                                             </View>
                                         </ListItem>
@@ -275,17 +273,17 @@ class NotificationScreen extends Component {
                             <FlatList 
                                 style={styles.notificationList} 
                                 enableEmptySections={true}
-                                data={lectures2}
+                                data={notifications}
                                 keyExtractor= {(item) => {
-                                    return item.name;
+                                    return item.code;
                                 }}
                                 renderItem={({item}) => {
                                     return (
                                         <ListItem>
                                             <View style={styles.notificationBox}>
                                                 <ListItem.Content>
-                                                <Text style={styles.description}>{item.name}</Text>
-                                                <Text style={styles.description}>{item.subtitle}</Text>
+                                                <Text style={item.time >0 ? styles.descriptionLecUpdatesh : styles.descriptionLecUpdatesO}>{item.name} ({item.code})</Text>
+                                                {(item.time >0) ? <Text style={styles.descriptionLecUpdatesh} >lecture {moment.duration(n.time, 'minutes').humanize(true)}</Text> : <Text style={styles.descriptionLecUpdatesO}>lecture ongoing </Text>}
                                                 </ListItem.Content>
                                             </View>
                                         </ListItem>
@@ -359,9 +357,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderRadius:10,
     },
-    description:{
+    descriptionAbsent:{
         fontSize:18,
         color: "red",
+    },
+    descriptionLecUpdatesO:{
+        fontSize:18,
+        color: "green",
+    },
+    descriptionLecUpdatesh:{
+        fontSize:18,
+        color: "limegreen",
     },
   
 });
