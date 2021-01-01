@@ -36,6 +36,8 @@ class Courses extends Component {
 		}
 	}
 
+	//try componentDidUpdate
+
 	/*timeout = () => {
     const { time } = getDayAndTime();
   }*/

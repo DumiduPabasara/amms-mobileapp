@@ -68,6 +68,8 @@ export default class App extends Component {
 		}
 	}
 
+	//try componentDidUpdate
+
 	isMarked = async (student, course) => {
 		try {
 			const { data } = await axios.get(
