@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, Text, Button, StyleSheet, Alert } from 'react-native';
-import { ListItem, Avatar, Card } from 'react-native-elements';
+import { ListItem, Avatar, Icon } from 'react-native-elements';
 import { LinearGradient } from "expo-linear-gradient";
 import { View } from 'react-native-animatable';
 import moment from 'moment';
@@ -74,16 +74,13 @@ export default function DetailedReport( {navigation, route}) {
     };    
 
     const isPresent = (date, presentDates) => {
-        //return presentDates.includes(getDate(date));
+        return presentDates.includes(getDate(date));
         //bug in frontend: color will misbehave if course have more than 2 lectures on same day
         //sol: check the time difference according to the backend timeout method (current 5 min)
 
-        const timeOut = 15;
+        /*const timeOut = 15;
 
         for (let i = 0; i < presentDates.length; i++) {
-
-            /*var then  = presentDates[i];
-            var now = date;*/
 
             var ms = moment(presentDates[i],"YYYY:MM:DD HH:mm:ss").diff(moment(date,"YYYY:MM:DD HH:mm:ss"));
             var d = moment.duration(ms);
@@ -96,7 +93,7 @@ export default function DetailedReport( {navigation, route}) {
 
         }
 
-        return false;
+        return false;*/
     
     };
 
@@ -132,6 +129,26 @@ export default function DetailedReport( {navigation, route}) {
                             }}
                             //onPress = {() => this.props.navigation.navigate('DetailedReport_Screen', { courseCode: l.code } )}
                         >
+                            <Avatar 
+                                size={52} 
+                                containerStyle={{ alignItems: 'center' }}
+                            >
+                                { isPresent(l.date, presentData)
+                                ?
+                                <Icon
+                                    name='check'
+                                    type='font-awesome'
+                                    color='#ffffe0'
+                                />
+                                :
+                                <Icon
+                                    name='times'
+                                    type='font-awesome'
+                                    color='#ffffe0'
+                                />
+                                }
+                                { isPresent(l.date, presentData) ? <Text style={styles.text}>Present</Text> : <Text style={styles.text}>Absent</Text>}
+                            </Avatar>
                             <ListItem.Content >
                                 <ListItem.Title style={styles.textN}>
                                     Lecture {index+1}
@@ -206,6 +223,10 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         fontSize: 15,
         flexGrow: 5
-    }
+    },
+    text: {
+        color: '#ffffe0',
+        fontSize: 10
+    },
   
   });

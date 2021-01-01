@@ -9,6 +9,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import * as Animatable from 'react-native-animatable';
 import Loading from '../loading';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { Circle } from 'react-native-svg';
 
 class ARScreen extends PureComponent {
 
@@ -70,7 +71,7 @@ class ARScreen extends PureComponent {
         return '#adff2f';
       }
 
-      else if ( average < 60) {
+      else if ( average < 60 && average != 0) {
         return '#f08080';
       }
 
@@ -86,7 +87,7 @@ class ARScreen extends PureComponent {
         return '#32cd32';
       }
 
-      else if ( average < 60 ) {
+      else if ( average < 60 && average != 0 ) {
         return '#dc143c';
       }
 
@@ -132,13 +133,16 @@ class ARScreen extends PureComponent {
                         width={3}
                         fill={this.renderAverage((l.presentDates.length), (l.dates.length)).toFixed(0)}
                         tintColor="#faf0e6"
-                        backgroundColor="#737373"
+                        backgroundColor="#DCDCDC88"
+                        arcSweepAngle={240}
+                        rotation={240}
+                        lineCap="round"
                        >
                            {
                             (fill) => (
                                 <Text style={ { fontSize: 20 } } >{ `${this.renderAverage((l.presentDates.length), (l.dates.length)).toFixed(0).toString()}%` }</Text>
                             )
-                            }
+                          }
                       </AnimatedCircularProgress>
                       <ListItem.Content >
                         <ListItem.Title style={ { color: '#faf0e6', fontWeight: 'bold' } }>
@@ -147,7 +151,6 @@ class ARScreen extends PureComponent {
                         <ListItem.Subtitle style={ { color: '#ffffe0', flex: 1, flexDirection: 'row' } }>
                           { l.name }
                         </ListItem.Subtitle>
-                        {/* { console.log(this.getPresentDates(l._id)) } */ }
                       </ListItem.Content>
                       <ListItem.Chevron color="white" />
                     </ListItem>
