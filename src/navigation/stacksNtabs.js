@@ -15,7 +15,7 @@ export const Stack = createStackNavigator();
 
 const Tab = createBottomTabNavigator();
 
-const Tabber = () => (
+const Tabber = ({ user }) => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, size }) => {
@@ -50,16 +50,17 @@ const Tabber = () => (
     />
     <Tab.Screen 
         name="Notification" 
-        component={ NotificationScreen } 
         options={{
             title: 'Notifications',
             tabBarBadge: 1,
           }} 
-    />
+    >
+        {props => (<NotificationScreen {...props} user = {user} />)}
+    </Tab.Screen>
   </Tab.Navigator>
 )
 
-export const HomeStack = () => (
+export const HomeStack = ({user}) => (
     <Stack.Navigator
         initialRouteName="Home_screen"
         mode="modal"
@@ -70,9 +71,10 @@ export const HomeStack = () => (
                 {headerTitle: null},
                 {headerShown: false}
             } 
-            name="Home_screen" 
-            component={Tabber}  
-        />
+            name="Home_screen"  
+        >
+            {props => (<Tabber {...props} user = {user} />)}
+        </Stack.Screen>
         <Stack.Screen 
             name="QRScanner_screen" 
             component={QRScannerScreen}

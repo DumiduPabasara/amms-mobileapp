@@ -49,6 +49,7 @@ export const isMarked = async (student, course) => {
   }
 };
 
+//This is for absent lectures
 export class Message {
 
   state = { course: {}, presentDays: [], absentDays: [] }
@@ -90,6 +91,7 @@ export class Message {
 
 };
 
+//This is for lecture updates
 export class Notification {
 
   state = { course: {} }

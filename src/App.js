@@ -24,7 +24,9 @@ const MainDrawer = ({user}) => (
   <Drawer.Navigator
     drawerStyle={ { backgroundColor: '#add8e6' } }
   >
-    <Drawer.Screen name="Home" component={ HomeStack } />
+    <Drawer.Screen name="Home">
+      {props => (<HomeStack {...props} user = {user} />)}
+    </Drawer.Screen>
     <Drawer.Screen name="Attendance Report">
       {props => (<ARStack {...props} user = {user} />)}
     </Drawer.Screen>
