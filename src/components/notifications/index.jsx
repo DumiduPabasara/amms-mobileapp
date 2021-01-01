@@ -7,6 +7,17 @@ import { baseUrl} from '../../api';
 import moment from 'moment';
 import axios from 'axios';
 import { Notification, Message, isActive } from '../common/scripts';
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
+
+//how the notification should behave if the app is running (communicate with mobile os)
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true //notification run even if the app is running foreground
+    };
+  }
+})
 
 class NotificationScreen extends Component {
 
@@ -32,6 +43,25 @@ class NotificationScreen extends Component {
 			await this.renderData();
             this.loadMessages();//absent Lectures
             this.loadNotifications();// lecture schedule updates
+
+            /***************************notification handeling******************************************************************/
+            //while apps run in background
+            const backgroundSubscription = Notifications.addNotificationResponseReceivedListener(response => {
+                console.log(response);
+            });
+        
+            //foregorund
+            const foregroundSubscription = Notifications.addNotificationReceivedListener(notification => {
+                console.log(notification);
+            });
+    
+            return () => {
+                    //avoid memory leaks and unwanted behaviors
+                    foregroundSubscription.remove(); 
+                    backgroundSubscription.remove();
+            }
+
+            /**************************************************************************************************************** */
 
 		} catch (err) {
 			console.error(err.message);
@@ -172,6 +202,30 @@ class NotificationScreen extends Component {
     /**************************************************************************************************************/
 
     render() {
+
+        const triggerNotificationHandler = (arr, type) => {
+
+            const msgType = '';
+
+            if(type=='absent') {
+                msgType = 'Absent Lectures !'
+            }
+            else {
+                msgType = 'Lecture Schedule Updates !'
+            }
+            //always use for local notifications (work on android no need of expo-permissions but ios need it)
+            Notifications.scheduleNotificationAsync({
+                content : {
+                    title: `AMMS-FOS ${msgType}`,
+                    body: `${arr.name} ${arr.code} `
+                    
+                },
+                trigger: {
+                    seconds: 10
+                }
+            })
+
+        };
 
         const { 
 
