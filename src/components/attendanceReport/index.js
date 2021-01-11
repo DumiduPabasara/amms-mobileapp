@@ -65,13 +65,13 @@ class ARScreen extends PureComponent {
 
     const { courses, loading } = this.state;
 
-    const choseColor1 = (average) => {
+    const choseColor1 = (average, presentDatesCount) => {
 
       if (average >= 80) {
         return '#adff2f';
       }
 
-      else if ( average < 60 && average != 0) {
+      else if ( average < 60 && average != 0 && presentDatesCount != 0) {
         return '#f08080';
       }
 
@@ -81,13 +81,13 @@ class ARScreen extends PureComponent {
 
     }
 
-    const choseColor2 = (average) => {
+    const choseColor2 = (average, presentDatesCount) => {
 
       if (average >= 80) {
         return '#32cd32';
       }
 
-      else if ( average < 60 && average != 0 ) {
+      else if ( average < 60 && average != 0 && presentDatesCount != 0 ) {
         return '#dc143c';
       }
 
@@ -122,7 +122,7 @@ class ARScreen extends PureComponent {
                       tension={ 100 } // These props are passed to the parent component (here TouchableScale)
                       activeScale={ 0.95 } //
                       linearGradientProps={ {
-                        colors: [choseColor1(this.renderAverage((l.presentDates.length), (l.dates.length))), choseColor2(this.renderAverage((l.presentDates.length), (l.dates.length)))],
+                        colors: [choseColor1(this.renderAverage((l.presentDates.length), (l.dates.length)), l.presentDates.length), choseColor2(this.renderAverage((l.presentDates.length), (l.dates.length)), l.presentDates.length)],
                         start: { x: 1, y: 0 },
                         end: { x: 0.2, y: 0 },
                       } }

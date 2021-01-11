@@ -256,6 +256,7 @@ class NotificationScreen extends Component {
                     >
                     <Card style={styles.container}>
                         <Card.FeaturedTitle style={styles.title}>My Absent Lectures { (absentLecCount && !watchedAbsent) ?<Badge value={absentLecCount} status="error" />: null}</Card.FeaturedTitle>
+                        
                         <Card.FeaturedSubtitle style={styles.subtitle}>You got {absentLecCount} notifications</Card.FeaturedSubtitle>   
                     </Card>
                     </TouchableOpacity>
@@ -337,7 +338,7 @@ class NotificationScreen extends Component {
                                             <View style={styles.notificationBox}>
                                                 <ListItem.Content>
                                                 <Text style={item.time >0 ? styles.descriptionLecUpdatesh : styles.descriptionLecUpdatesO}>{item.name} ({item.code})</Text>
-                                                {(item.time >0) ? <Text style={styles.descriptionLecUpdatesh} >lecture {moment.duration(n.time, 'minutes').humanize(true)}</Text> : <Text style={styles.descriptionLecUpdatesO}>lecture ongoing </Text>}
+                                                {(item.time >0) ? <Text style={styles.descriptionLecUpdatesh} >lecture {moment.duration(item.time, 'minutes').humanize(true)}</Text> : <Text style={styles.descriptionLecUpdatesO}>lecture ongoing </Text>}
                                                 </ListItem.Content>
                                             </View>
                                         </ListItem>
